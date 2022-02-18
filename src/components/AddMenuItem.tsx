@@ -13,7 +13,7 @@ export default function AddMenuItem(){
     const imageRef:any = useRef();
     const [imageSrc, setImageSrc] = useState('/assets/add-menu-item.png');
     const [iceName,setIceName] = useState('');
-    const [category, setCategory] = useState('');
+    const [category, setCategory] = useState('def');
     const [image, setImage] = useState<File>();
     //window.location.href = '/secret';
 
@@ -49,7 +49,15 @@ export default function AddMenuItem(){
          }
        });
     }
-
+     
+    const saveCategory = async() =>{
+      const ct = {
+        cat:category,
+      };
+       await axios.put('http://localhost:3000/save-category',ct).then(res=>{
+         console.log(res.data);
+       })
+    }
     return(
         <div className="relative h-full">
            <header className='w-full h-fit bg-[#f1f1f1] flex justify-between px-[25%] py-5'>
@@ -95,7 +103,8 @@ export default function AddMenuItem(){
                 <button className="w-full bg-[#ff4a60] py-4 text-white rounded-full font-semibold"
                   onClick={()=>{
                     //  uploadImage();
-                    saveIceItem();
+                     saveIceItem();
+                    // saveCategory();
                   }}
                 >Add this item</button>
                </section>

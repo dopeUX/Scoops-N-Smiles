@@ -14,8 +14,8 @@ export default function HomePage(){
     useEffect(()=>{
      axios.get('http://localhost:3000/retrieve-items/').then(res=>{
         setItems(res.data.items);
-        console.log(items);
-        console.log(items.length);
+         console.log(items);
+ 
      })
     },[]);
     const dispatch = useDispatch();

@@ -3,7 +3,6 @@ import AppDashboard from './components/AppDashboard';
 import {Route, Routes} from 'react-router-dom';
 import CartPage from './components/CartPage';
 import AddMenuItem from './components/AddMenuItem';
-//shreyash
 
 function App() {
   const adminKey:string = "/secret";

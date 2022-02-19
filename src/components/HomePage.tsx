@@ -12,11 +12,11 @@ export default function HomePage(){
    
     const [items,setItems] = useState([]);
     useEffect(()=>{
-     axios.get('http://localhost:3000/retrieve-items/').then(res=>{
-        setItems(res.data.items);
-         console.log(items);
+   //   axios.get('http://localhost:3000/retrieve-items/').then(res=>{
+   //      setItems(res.data.items);
+   //       console.log(items);
  
-     })
+   //   })
     },[]);
     const dispatch = useDispatch();
     const authCheck = useSelector((state:RootState)=>{

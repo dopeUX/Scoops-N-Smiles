@@ -43,11 +43,16 @@ export default function AddMenuItem(){
          price:price,
          image:image
        }
-       await axios.post('http://localhost:3000/save-item',item).then(res=>{
-         if(res.status){
+      //  await axios.post('http://localhost:3000/save-item',item).then(res=>{
+      //    if(res.status){
+      //      uploadImage();
+      //    }
+      //  });
+       const response = await axios.post('http://localhost:3000/save-item',item)
+         if(response.status){
            uploadImage();
          }
-       });
+       
     }
      
     const saveCategory = async() =>{

@@ -158,6 +158,7 @@ export default function AuthPage(){
          <img src="./assets/close.png" alt="" className='w-10 absolute right-10 top-5 cursor-pointer' onClick={()=>{
           dispatch(changeAuthPageState('animate-slideUp'));
         }}/>
+          
       </div>
     );
 }

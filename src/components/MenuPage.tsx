@@ -1,110 +1,133 @@
-import React,{useEffect, useState} from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import ProductItem from "./ProductItem";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store";
+import { changeAuthPageState } from "../AppSlice";
 
-export default function MenuPage(){
-    const [categories, setCategories] = useState([]);
-    const [products, setProducts] = useState<any[]>([]);
-    const [category, setCategory] = useState({
-      // cones : 'cones', 
-      // cups : 'cups'
-    });
-    var arr:any[] = [];
+export default function MenuPage() {
+  const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState<any[]>([]);
+  const [showLoader, setShowLoader] = useState(false);
+  const dispatch = useDispatch();
+  const authCheck = useSelector((state: RootState) => {
+    return state.appReducer.checkUserAuth;
+  });
+  const [category, setCategory] = useState({
+    // cones : 'cones',
+    // cups : 'cups'
+  });
 
-    async function getCategories(){
-     const res = await axios.get('http://localhost:3000/retrieve-categories');
-      return res.data.items;
+  async function getCategories() {
+    const res = await axios.get("http://localhost:3000/retrieve-categories");
+    return res.data.items;
+  }
+
+  useEffect(() => {
+    try {
+      setShowLoader(true);
+      getCategories().then((res) => {
+        setCategories(res);
+        setShowLoader(false);
+        console.log("state changed");
+      });
+    } catch (error) {
+      setShowLoader(false);
+      console.error("unable to get categories", error);
     }
-    
-    useEffect(() => {
-      try {
-        getCategories().then(res=>{
-          setCategories(res)
-        });
+  }, []);
 
-        getProducts('cups')
-      } catch (error) {
-        console.log(error)
-      }
-       
-        //  console.log(c)
-        
-        //  getProducts('cups').then(res2=>{
-        //    console.log(res2)
-        //  })
-         
-        
+  useEffect(() => {
+    try {
+      setShowLoader(true);
+      getProducts("cups");
+    } catch (error) {
+      setShowLoader(false);
+      console.log(error);
+    }
+  }, []);
 
-        //  getProducts('cups').then(res=>{
-        //   console.log(res)
-        //   arr.push(...res);
-        //   console.log("thisis", arr);
-        //  })
-         //  console.log(getProducts('cups'));
-          // console.log(getProducts('cups',[]))
-          
-     },[]);
+  function saveItemToCart() {}
 
-      // console.log(categories)
-    //  temp()
-     async function getProducts(category:string){     
-      // let arr:any[] = []; 
-      const config = {
-        headers:{
-          category: category
-        }
-      }
-      return await axios.get('http://localhost:3000/retrieve-products', config).then(res=>{
-        // setProducts(res.data.items);
-      //  setProducts(res.data.items);
-        if(res.status===200){
+  function checkIfUserLoggedIn(itemName: string): any {
+    if (authCheck === "not logged in") {
+      dispatch(changeAuthPageState("animate-slideDown"));
+    } else {
+      console.log(itemName + " order placed");
+      jwtVerify();
+    }
+  }
+  const jwtVerify = async () => {
+    let config = {
+      headers: {
+        "x-access-token": authCheck,
+      },
+    };
+    await axios.get("http://localhost:3000/auth-check", config).then((res) => {
+      console.log(res.data.email);
+    });
+  };
+
+  async function getProducts(category: string) {
+    const config = {
+      headers: {
+        category: category,
+      },
+    };
+    return await axios
+      .get("http://localhost:3000/retrieve-products", config)
+      .then((res) => {
+        if (res.status === 200) {
           setProducts(res.data.items);
-           console.log(res.data.items)
+          console.log(res.data.items);
+          setShowLoader(false);
         }
         return res.data.items;
       });
-     }
+  }
 
-      // function mapArray(cat:string):any{
-      //   return getProducts('cups').then(
-      //     res=>{
-      //       return res
-      //     }
-      //   )
-      // }
-      
-      
-  //  console.log(getProducts('cups'));
-    
-    return (
-        <div>
-         {
-           categories.map((item:any, index:number)=>{
-             return (
-            
-              <section className='w-fit h-fit' key={index}>
-                 <div className='flex'>
-                 <div className='w-fit h-fit flex my-3'>
-                  <h1 className='font-semibold relative text-xl z-10 my-1'>{item.category}</h1>
-                  <div className='bg-[#ff4a60] w-16 ml-[-2.3em]'></div>
-                 </div>   
-                 <div className='w-32 h-1 bg-[#CBCBCB] my-auto rounded-full ml-5'></div>
-                 </div>
-                 <div>
-                 {
-                   products.length && products.filter(product=>{
-                     return product.category===item.category
-                   }).map((item,i)=>{
-                      return <h1 key={i}>{item.iceName}</h1>
-                   })
-                  
-                  }
-                 </div>
-              </section>
-             );   
-           })
-         }
-        </div>
-        
-       
-    );
+  if (showLoader) {
+    console.log("...loading");
+    return <div>loading...</div>;
+  }
+
+  return (
+    <div className="mt-5 ml-20">
+      {categories.map((item: any, index: number) => {
+        return (
+          <section className="w-fit h-fit" key={index}>
+            <div className="flex">
+              <div className="w-fit h-fit flex my-3">
+                <h1 className="font-semibold relative text-xl z-10 my-1">
+                  {item.category}
+                </h1>
+                <div className="bg-[#ff4a60] w-16 ml-[-2.3em]"></div>
+              </div>
+              <div className="w-32 h-1 bg-[#CBCBCB] my-auto rounded-full ml-5"></div>
+            </div>
+            <div>
+              <ul className="inline-block w-full ml-10 my-10">
+                {products.length &&
+                  products
+                    .filter((product) => product.category === item.category)
+                    .map((item, index) => {
+                      return (
+                        <li key={index} className="inline-block">
+                          <ProductItem
+                            iceName={item.iceName}
+                            price={item.price}
+                            onAddToCartClick={() => {
+                              checkIfUserLoggedIn(item.iceName);
+                            }}
+                          />
+                        </li>
+                      );
+                    })}
+              </ul>
+            </div>
+          </section>
+        );
+      })}
+    </div>
+  );
 }

@@ -47,7 +47,10 @@ export default function MenuPage() {
     }
   }, []);
 
-  function saveItemToCart() {}
+  async function saveItemToCart(email: string) {
+    const res = await axios.post("http://localhost:3000/api/save-item-to-cart");
+    console.log(res.data);
+  }
 
   function checkIfUserLoggedIn(itemName: string): any {
     if (authCheck === "not logged in") {
@@ -65,6 +68,7 @@ export default function MenuPage() {
     };
     await axios.get("http://localhost:3000/auth-check", config).then((res) => {
       console.log(res.data.email);
+      saveItemToCart(res.data.email);
     });
   };
 

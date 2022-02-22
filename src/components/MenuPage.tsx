@@ -47,20 +47,27 @@ export default function MenuPage() {
     }
   }, []);
 
-  async function saveItemToCart(email: string) {
-    const res = await axios.post("http://localhost:3000/api/save-item-to-cart");
-    console.log(res.data);
+  async function saveItemToCart(email: string, itemId: string) {
+    const body = {
+      email: email,
+      productId: itemId,
+    };
+    const res = await axios.post(
+      "http://localhost:3000/api/save-item-to-cart",
+      body,
+    );
+    console.log(res);
   }
 
-  function checkIfUserLoggedIn(itemName: string): any {
+  function checkIfUserLoggedIn(itemName: string, itemId: string): any {
     if (authCheck === "not logged in") {
       dispatch(changeAuthPageState("animate-slideDown"));
     } else {
       console.log(itemName + " order placed");
-      jwtVerify();
+      jwtVerify(itemId);
     }
   }
-  const jwtVerify = async () => {
+  const jwtVerify = async (itemId: string) => {
     let config = {
       headers: {
         "x-access-token": authCheck,
@@ -68,7 +75,7 @@ export default function MenuPage() {
     };
     await axios.get("http://localhost:3000/auth-check", config).then((res) => {
       console.log(res.data.email);
-      saveItemToCart(res.data.email);
+      saveItemToCart(res.data.email, itemId);
     });
   };
 
@@ -121,7 +128,7 @@ export default function MenuPage() {
                             iceName={item.iceName}
                             price={item.price}
                             onAddToCartClick={() => {
-                              checkIfUserLoggedIn(item.iceName);
+                              checkIfUserLoggedIn(item.iceName, item._id);
                             }}
                           />
                         </li>

@@ -40,7 +40,7 @@ export default function MenuPage() {
   useEffect(() => {
     try {
       setShowLoader(true);
-      getProducts("cups");
+      getProducts();
     } catch (error) {
       setShowLoader(false);
       console.log(error);
@@ -79,10 +79,10 @@ export default function MenuPage() {
     });
   };
 
-  async function getProducts(category: string) {
+  async function getProducts() {
     const config = {
       headers: {
-        category: category,
+        category: "",
       },
     };
     return await axios

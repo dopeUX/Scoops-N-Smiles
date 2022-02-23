@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import CartItem from "./CartItem";
@@ -6,6 +6,7 @@ import axios from "axios";
 import getCartItems from "../functions/getCartItems";
 
 export default function CartPage() {
+  const [cartItems, setCartItems] = useState<any[]>([]);
   const authCheck = useSelector((state: RootState) => {
     return state.appReducer.checkUserAuth;
   });
@@ -22,8 +23,10 @@ export default function CartPage() {
     };
     await axios.get("http://localhost:3000/auth-check", config).then((res) => {
       console.log(res.data.email);
-      getCartItems(res.data.email);
-      //   saveItemToCart(res.data.email, itemId);
+      getCartItems(res.data.email).then((res) => {
+        setCartItems(res);
+        console.log(res);
+      });
     });
   };
 
@@ -43,9 +46,9 @@ export default function CartPage() {
       <div className="px-[16%] pt-5 flex justify-between ">
         <section className="flex flex-col">
           <h2 className="text-[#ff4a60] font-semibold text-lg ml-3">3 items</h2>
-          <CartItem />
-          <CartItem />
-          <CartItem />
+          {cartItems.map((item: any, index: number) => {
+            return <CartItem key={index} />;
+          })}
         </section>
 
         <section className="mt-16">

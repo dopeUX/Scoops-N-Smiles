@@ -56,7 +56,7 @@ export default function MenuPage() {
       "http://localhost:3000/api/save-item-to-cart",
       body,
     );
-    console.log(res);
+    console.log(res.data);
   }
 
   function checkIfUserLoggedIn(itemName: string, itemId: string): any {

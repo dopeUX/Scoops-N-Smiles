@@ -3,16 +3,24 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import CartItem from "./CartItem";
 import axios from "axios";
+import { useNavigate } from "react-router";
 import getCartItems from "../functions/getCartItems";
+import getProducts from "../functions/getProductItems";
 
 export default function CartPage() {
-  const [cartItems, setCartItems] = useState<any[]>([]);
+  const [cartItems, setCartItems] = useState([]);
+  const nav = useNavigate();
+  // const [products, setProducts] = useState<any[]>([]);
   const authCheck = useSelector((state: RootState) => {
     return state.appReducer.checkUserAuth;
   });
 
   useEffect(() => {
-    jwtVerify();
+    try {
+      jwtVerify();
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   const jwtVerify = async () => {
@@ -37,6 +45,9 @@ export default function CartPage() {
           src="/assets/back_button.png"
           className="w-16 h-16 cursor-pointer"
           alt=""
+          onClick={() => {
+            nav(-1);
+          }}
         />
         <h1 className="font-bold text-lg my-auto ml-6">Ice cart</h1>
         <h1 className="w-fit logo text-center text-lg my-auto ml-auto mr-0">
@@ -47,7 +58,7 @@ export default function CartPage() {
         <section className="flex flex-col">
           <h2 className="text-[#ff4a60] font-semibold text-lg ml-3">3 items</h2>
           {cartItems.map((item: any, index: number) => {
-            return <CartItem key={index} />;
+            return <CartItem key={index} item={item} />;
           })}
         </section>
 

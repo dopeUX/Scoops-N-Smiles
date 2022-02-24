@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import deleteCartItem from "../functions/deleteCartItem";
 
 export default function CartItem(props) {
   const [iceName, setIceName] = useState("");
@@ -29,7 +30,12 @@ export default function CartItem(props) {
             <h3 className="text-[#ff4a60] font-semibold">
               $ {props.item.quantity * props.item.price}
             </h3>
-            <h4 className="text-[#ff4a60] font-semibold cursor-pointer ml-7">
+            <h4
+              className="text-[#ff4a60] font-semibold cursor-pointer ml-7"
+              onClick={() => {
+                deleteCartItem(props.email, props.item.productId);
+              }}
+            >
               remove
             </h4>
           </div>

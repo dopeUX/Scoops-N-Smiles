@@ -5,11 +5,16 @@ import CartItem from "./CartItem";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import getCartItems from "../functions/getCartItems";
+import calculateCartTotal from "../functions/calculateCartTotal";
 import getProducts from "../functions/getProductItems";
+import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 
 export default function CartPage() {
+  //temp email
+  const [email, setEmail] = useState("");
   const [cartItems, setCartItems] = useState([]);
   const nav = useNavigate();
+  const [subtotal, setSubtotal] = useState(0);
   // const [products, setProducts] = useState<any[]>([]);
   const authCheck = useSelector((state: RootState) => {
     return state.appReducer.checkUserAuth;
@@ -31,9 +36,14 @@ export default function CartPage() {
     };
     await axios.get("http://localhost:3000/auth-check", config).then((res) => {
       console.log(res.data.email);
-      getCartItems(res.data.email).then((res) => {
+      setEmail(res.data.email);
+      getCartItems(res.data.email).then(async (res) => {
         setCartItems(res);
         console.log(res);
+        calculateCartTotal(res).then((response) => {
+          setSubtotal(response);
+          console.log(response);
+        });
       });
     });
   };
@@ -58,7 +68,7 @@ export default function CartPage() {
         <section className="flex flex-col">
           <h2 className="text-[#ff4a60] font-semibold text-lg ml-3">3 items</h2>
           {cartItems.map((item: any, index: number) => {
-            return <CartItem key={index} item={item} />;
+            return <CartItem key={index} item={item} email={email} />;
           })}
         </section>
 
@@ -68,7 +78,8 @@ export default function CartPage() {
               Delivering to Silicon valley
             </h2>
             <h2 className="w-full text-white font-medium justify-between">
-              Subtotal : <span className="float-right font-semibold">$48</span>
+              Subtotal :{" "}
+              <span className="float-right font-semibold">$ {subtotal}</span>
             </h2>
             <h2 className="w-full text-white font-medium justify-between my-4">
               Tax : <span className="float-right font-semibold">5%</span>
@@ -80,7 +91,10 @@ export default function CartPage() {
           </div>
 
           <h2 className="w-[85%] font-bold mx-auto text-2xl my-6">
-            Total: <span className="float-right text-[#ff4a60]">$56</span>
+            Total:{" "}
+            <span className="float-right text-[#ff4a60]">
+              $ {0.05 * subtotal + subtotal + 20}
+            </span>
           </h2>
           <button className="w-[90%] bg-[#ff4a60] mx-auto block rounded-full text-white font-semibold py-4">
             Place order

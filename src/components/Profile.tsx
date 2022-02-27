@@ -1,6 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import getLoggeInUserDetails from "../functions/getLoggeInUserDetails";
+import updateUserDetails from "../functions/updateUserDetails";
+import verifyToken from "../functions/verifyToken";
 import { RootState } from "../store";
 
 export default function ProfilePage() {
@@ -8,7 +10,7 @@ export default function ProfilePage() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [address, setAddress] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState(0);
   const [user, setUser] = useState<any>({ undefined });
   const editRef: any = useRef();
   const [contentEditable, setContentEditable] = useState(false);
@@ -128,12 +130,20 @@ export default function ProfilePage() {
               className="w-64 mt-5 py-3 px-4 bg-[#e9e9e9] rounded-xl border-2 font-semibold focus:outline-none focus:border-[#ff4a60] focus:ring-1 focus:ring-[#ff4a60] cs:w-full"
               value={phone || ""}
               onChange={(e) => {
-                setPhone(e.target.value);
+                setPhone(e.target.valueAsNumber);
               }}
               readOnly={contentEditable === false ? true : false}
             />
           </div>
-          <button className="w-fit h-fit bg-[#ff4a60] text-white font-semibold px-4 py-3 rounded-lg mb-0 mt-auto cs:mx-auto cs:block cs:mt-8">
+          <button
+            className={`w-fit h-fit cursor-pointer px-4 text-white font-semibold py-3 rounded-lg mb-0 mt-auto cs:mx-auto cs:block cs:mt-8 ${
+              contentEditable ? "bg-[#ff4a60]" : "bg-[#d2d2d2]"
+            } ${contentEditable ? "cursor-pointer" : "cursor-default"}`}
+            onClick={() => {
+              updateUserDetails(email, firstName, lastName, phone, address);
+            }}
+            disabled={contentEditable === false ? true : false}
+          >
             Save details
           </button>
         </div>

@@ -7,17 +7,20 @@ import { useNavigate } from "react-router";
 import getCartItems from "../functions/getCartItems";
 import calculateCartTotal from "../functions/calculateCartTotal";
 import saveCartItemsToAdmin from "../functions/saveCartItemsToAdmin";
+import getLoggeInUserDetails from "../functions/getLoggeInUserDetails";
 
 export default function CartPage() {
   //temp email
   const [email, setEmail] = useState("");
   const [cartItems, setCartItems] = useState([]);
+  const [user, setUser] = useState<any>({});
   const nav = useNavigate();
   const [subtotal, setSubtotal] = useState(0);
   // const [products, setProducts] = useState<any[]>([]);
   const authCheck = useSelector((state: RootState) => {
     return state.appReducer.checkUserAuth;
   });
+  const total = 0.05 * subtotal + subtotal + 20;
 
   useEffect(() => {
     try {
@@ -34,7 +37,8 @@ export default function CartPage() {
       },
     };
     await axios.get("http://localhost:3000/auth-check", config).then((res) => {
-      console.log(res.data.email);
+      console.log(res.data);
+      // setUser(res.data);
       setEmail(res.data.email);
 
       getCartItems(res.data.email).then(async (res) => {
@@ -46,6 +50,35 @@ export default function CartPage() {
         });
       });
     });
+  };
+
+  const saveOrderToAdmin = async () => {
+    var currentdate = new Date();
+    var datetime =
+      (await "Order time : ") +
+      currentdate.getDate() +
+      "/" +
+      (currentdate.getMonth() + 1) +
+      "/" +
+      currentdate.getFullYear() +
+      " @ " +
+      currentdate.getHours() +
+      ":" +
+      currentdate.getMinutes() +
+      ":" +
+      currentdate.getSeconds();
+    const user = await getLoggeInUserDetails(authCheck);
+    saveCartItemsToAdmin(
+      user.email,
+      user.firstName,
+      user.lastName,
+      "active",
+      user.phone,
+      user.address,
+      datetime,
+      "$" + total,
+      cartItems,
+    );
   };
 
   return (
@@ -66,7 +99,9 @@ export default function CartPage() {
       </header>
       <div className="px-[16%] pt-5 flex justify-between ">
         <section className="flex flex-col">
-          <h2 className="text-[#ff4a60] font-semibold text-lg ml-3">3 items</h2>
+          <h2 className="text-[#ff4a60] font-semibold text-lg ml-3">
+            {cartItems.length} items
+          </h2>
           {cartItems.map((item: any, index: number) => {
             return <CartItem key={index} item={item} email={email} />;
           })}
@@ -91,15 +126,12 @@ export default function CartPage() {
           </div>
 
           <h2 className="w-[85%] font-bold mx-auto text-2xl my-6">
-            Total:{" "}
-            <span className="float-right text-[#ff4a60]">
-              $ {0.05 * subtotal + subtotal + 20}
-            </span>
+            Total: <span className="float-right text-[#ff4a60]">$ {total}</span>
           </h2>
           <button
             className="w-[90%] bg-[#ff4a60] mx-auto block rounded-full text-white font-semibold py-4"
             onClick={() => {
-              saveCartItemsToAdmin();
+              saveOrderToAdmin();
             }}
           >
             Place order

@@ -23,7 +23,7 @@ module.exports = {
             top:'0'
           },
           to:{
-            top:'-42em'
+            top:'-45em'
           }
        }
       }
@@ -33,11 +33,16 @@ module.exports = {
     },
     screens: {
       'sm': '600px',
-      // => @media (min-width: 640px) { ... }
+      // => @media only screen and(min-width: 600px) { ... }
+
+      'cs':{'max': '650px'},
+      //=> @media (min-width: 650px) { ... }
+
+      'tab':{'max': '700px'},
 
       'md': '700px',
-      // => @media (min-width: 768px) { ... }
-    
+      // => @media (min-width: 700px) { ... }
+       
       'mr': '769px',
       // => @media (min-width: 769px) { ... }
 

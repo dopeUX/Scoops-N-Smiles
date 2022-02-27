@@ -46,13 +46,15 @@ export default function Header() {
               }`}
             />
           </Link>
-          <img
-            src="./assets/gamer.png"
-            alt=""
-            className={`w-11 h-11 my-auto cursor-pointer ml-5 ${
-              checkIfUserLoggedIn() ? "flex" : "hidden"
-            }`}
-          />
+          <Link to="/profile">
+            <img
+              src="./assets/gamer.png"
+              alt=""
+              className={`w-11 h-11 my-auto cursor-pointer ml-5 ${
+                checkIfUserLoggedIn() ? "flex" : "hidden"
+              }`}
+            />
+          </Link>
           <button
             onClick={() => {
               slideDownAuthPage();

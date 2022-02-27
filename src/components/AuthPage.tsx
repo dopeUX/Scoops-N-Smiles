@@ -116,7 +116,7 @@ export default function AuthPage() {
 
   return (
     <div
-      className={`w-full fixed z-50 ${authPageState} bg-black h-fit top-[-30em]`}
+      className={`w-full fixed z-50 ${authPageState} bg-black h-fit top-[-45em]`}
     >
       <div className="w-fit h-fit mx-auto my-8 pb-1 flex flex-row">
         {/* logo section   */}

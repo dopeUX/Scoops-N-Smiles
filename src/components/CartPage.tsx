@@ -6,8 +6,7 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import getCartItems from "../functions/getCartItems";
 import calculateCartTotal from "../functions/calculateCartTotal";
-import getProducts from "../functions/getProductItems";
-import ReactCSSTransitionGroup from "react-addons-css-transition-group";
+import saveCartItemsToAdmin from "../functions/saveCartItemsToAdmin";
 
 export default function CartPage() {
   //temp email
@@ -37,9 +36,10 @@ export default function CartPage() {
     await axios.get("http://localhost:3000/auth-check", config).then((res) => {
       console.log(res.data.email);
       setEmail(res.data.email);
+
       getCartItems(res.data.email).then(async (res) => {
         setCartItems(res);
-        console.log(res);
+        console.log("this is", res);
         calculateCartTotal(res).then((response) => {
           setSubtotal(response);
           console.log(response);
@@ -96,7 +96,12 @@ export default function CartPage() {
               $ {0.05 * subtotal + subtotal + 20}
             </span>
           </h2>
-          <button className="w-[90%] bg-[#ff4a60] mx-auto block rounded-full text-white font-semibold py-4">
+          <button
+            className="w-[90%] bg-[#ff4a60] mx-auto block rounded-full text-white font-semibold py-4"
+            onClick={() => {
+              saveCartItemsToAdmin();
+            }}
+          >
             Place order
           </button>
         </section>

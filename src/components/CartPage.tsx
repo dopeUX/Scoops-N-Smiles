@@ -20,7 +20,7 @@ export default function CartPage() {
   const authCheck = useSelector((state: RootState) => {
     return state.appReducer.checkUserAuth;
   });
-  const total = 0.05 * subtotal + subtotal + 20;
+  let total = subtotal === 0 ? 0 : 0.05 * subtotal + subtotal + 20;
 
   useEffect(() => {
     try {

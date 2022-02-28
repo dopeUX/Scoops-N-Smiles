@@ -9,6 +9,7 @@ export default async function getLoggeInUserDetails(token:string){
          }
      }  
      return await axios.get('http://localhost:3000/api/get-logged-in-user-details', config).then(res=>{
+      //  console.log('thi',res.data.user) 
        return res.data.user;
      })
    })

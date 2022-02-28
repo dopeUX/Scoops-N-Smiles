@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import ProductItem from "./ProductItem";
 import { useDispatch, useSelector } from "react-redux";
@@ -103,12 +103,12 @@ export default function MenuPage() {
   }
 
   return (
-    <div className="mt-5 ml-20">
+    <div className="mt-3 ml-10">
       {categories.map((item: any, index: number) => {
         return (
           <section className="w-fit h-fit" key={index}>
             <div className="flex">
-              <div className="w-fit h-fit flex my-3">
+              <div className="w-fit h-fit flex my-1">
                 <h1 className="font-semibold relative text-xl z-10 my-1">
                   {item.category}
                 </h1>
@@ -117,7 +117,7 @@ export default function MenuPage() {
               <div className="w-32 h-1 bg-[#CBCBCB] my-auto rounded-full ml-5"></div>
             </div>
             <div>
-              <ul className="inline-block w-full ml-10 my-10">
+              <ul className="inline-block w-full ml-3 my-0 mb-10">
                 {products.length &&
                   products
                     .filter((product) => product.category === item.category)

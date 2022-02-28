@@ -6,11 +6,12 @@ import { changeUserAuthState } from "../AppSlice";
 import axios from "axios";
 import jwt from "jsonwebtoken";
 import { GoogleLogin } from "react-google-login";
+import { useNavigate } from "react-router";
 
 export default function AuthPage() {
   const [email, setEmail] = useState("wqdwqd");
   const [password, setPassword] = useState("qwdwqdqd");
-
+  const nav = useNavigate();
   const [cp, setcp] = useState("hidden");
   const [authTitle, setAuthTitle] = useState("Login to your account");
   const [submitButton, setSubmitText] = useState("Sign in");
@@ -105,6 +106,7 @@ export default function AuthPage() {
           alert("login successful");
           localStorage.setItem("userToken", res.data.token);
           dispatch(changeUserAuthState(res.data.token));
+          nav("/profile");
         } else {
           alert("please enter the correct username and password");
         }

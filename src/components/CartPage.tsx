@@ -25,6 +25,11 @@ export default function CartPage() {
   useEffect(() => {
     try {
       jwtVerify();
+      //for preventing user to go back -------------------
+      // window.history.pushState(null, document.title, window.location.href);
+      // window.addEventListener("popstate", function (event) {
+      //   window.history.pushState(null, document.title, window.location.href);
+      // });
     } catch (error) {
       console.log(error);
     }

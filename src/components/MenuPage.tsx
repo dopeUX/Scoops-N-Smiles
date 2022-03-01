@@ -127,6 +127,7 @@ export default function MenuPage() {
                           <ProductItem
                             iceName={item.iceName}
                             price={item.price}
+                            color={item.color}
                             onAddToCartClick={() => {
                               checkIfUserLoggedIn(item.iceName, item._id);
                             }}

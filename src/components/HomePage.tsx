@@ -5,15 +5,17 @@ import { changeAuthPageState } from "../AppSlice";
 import Footer from "./Footer";
 import { RootState } from "../store";
 import axios from "axios";
+import topPicks from "../functions/getTopPicks";
 import jwt from "jsonwebtoken";
 
 export default function HomePage() {
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState<any>([]);
   useEffect(() => {
     //  axios.get("http://localhost:3000/retrieve-products/").then((res) => {
     //    setItems(res.data.items);
     //    console.log(items);
     //  });
+    setItems(topPicks);
   }, []);
   const dispatch = useDispatch();
   const authCheck = useSelector((state: RootState) => {
@@ -54,13 +56,14 @@ export default function HomePage() {
             </h1>
           </div>
 
-          <ul className="mt-3 pl-5 py-7 w-full h-fit mx-auto relative flex overflow-x-scroll md:overflow-hidden md:w-fit">
+          <ul className="mt-3 pl-5 py-7 pb-10 w-full h-fit mx-auto relative flex overflow-x-scroll md:overflow-hidden md:w-fit">
             {items.map((item: any, index: number) => {
               return (
                 <ProductItem
                   key={index}
                   iceName={item.iceName}
                   price={item.price}
+                  color={item.color}
                   onAddToCartClick={() => {
                     checkIfUserLoggedIn(item.iceName);
                   }}

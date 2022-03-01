@@ -9,8 +9,9 @@ import { GoogleLogin } from "react-google-login";
 import { useNavigate } from "react-router";
 
 export default function AuthPage() {
-  const [email, setEmail] = useState("wqdwqd");
-  const [password, setPassword] = useState("qwdwqdqd");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPass, setConfirmPass] = useState("");
   const nav = useNavigate();
   const [cp, setcp] = useState("hidden");
   const [authTitle, setAuthTitle] = useState("Login to your account");
@@ -85,7 +86,9 @@ export default function AuthPage() {
         console.log("success", res);
         alert("sign up successfull");
         localStorage.setItem("userToken", res.data.token);
+        dispatch(changeAuthPageState("animate-slideUp"));
         dispatch(changeUserAuthState(res.data.token));
+        nav("/profile");
       })
       .catch((err) => {
         console.log(err.response);
@@ -105,8 +108,8 @@ export default function AuthPage() {
         if (res.data.user) {
           alert("login successful");
           localStorage.setItem("userToken", res.data.token);
+          dispatch(changeAuthPageState("animate-slideUp"));
           dispatch(changeUserAuthState(res.data.token));
-          nav("/profile");
         } else {
           alert("please enter the correct username and password");
         }
@@ -158,7 +161,7 @@ export default function AuthPage() {
           />
           <input
             onChange={(e) => {
-              setPassword(e.target.value);
+              setConfirmPass(e.target.value);
             }}
             type="password"
             className={`w-64 bg-[#414141] text-white font-semibold text-sm rounded-md pl-4 py-4 mb-6 ${cp}`}
@@ -168,10 +171,22 @@ export default function AuthPage() {
             onClick={() => {
               if (num === 0) {
                 //login is showed
-                loginUser(email, password);
+                if (email !== "" && password !== "") {
+                  loginUser(email, password);
+                } else {
+                  alert("email or password should not be left empty");
+                }
               } else if (num === 1) {
                 //sign up is showed
-                registerUser(email, password);
+                if (email !== "" && password !== "" && confirmPass !== "") {
+                  if (password === confirmPass) {
+                    registerUser(email, password);
+                  } else {
+                    alert("Enter passwords don't match");
+                  }
+                } else {
+                  alert("Please enter the correct email and password");
+                }
               }
             }}
             className="w-fit bg-[#6c69f9] text-white px-9 py-4 ml-0 mr-auto rounded-md text-sm font-semibold"

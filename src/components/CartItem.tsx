@@ -21,8 +21,10 @@ export default function CartItem(props) {
           alt=""
         />
         <div className="block w-fit">
-          <h2 className="font-semibold text-lg mt-1">{props.item.iceName}</h2>
-          <h3 className="mt-1 mb-3 text-[#797979]">
+          <h2 className="font-semibold text-lg mt-1 text-[#505050]">
+            {props.item.iceName}
+          </h2>
+          <h3 className="mt-1 mb-3 text-[#797979] font-semibold">
             quantity :{" "}
             <span className="font-bold text-black">{props.item.quantity}</span>
           </h3>
@@ -34,8 +36,8 @@ export default function CartItem(props) {
               className="text-[#ff4a60] font-semibold cursor-pointer ml-7"
               onClick={() => {
                 deleteCartItem(props.email, props.item.productId);
-               }}
-              >
+              }}
+            >
               remove
             </h4>
           </div>

@@ -7,7 +7,8 @@ module.exports = {
     extend: {
       animation:{
         slideDown: 'slide_down .5s ease forwards',
-        slideUp:'slide_up .5s ease forwards'
+        slideUp:'slide_up .5s ease forwards',
+        zoomIn:'zoom_in .5s ease forwards'
       },
       keyframes:{
         slide_down:{
@@ -25,7 +26,15 @@ module.exports = {
           to:{
             top:'-45em'
           }
-       }
+       },
+        zoom_in:{
+          from:{
+            transform:'scale(1)'
+          },
+          to:{
+            transform:'scale(1.1)'
+          }
+        }
       }
     },
     fontFamily: {

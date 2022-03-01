@@ -15,6 +15,7 @@ export default function AddMenuItem() {
   const [iceName, setIceName] = useState("");
   const [category, setCategory] = useState("def");
   const [image, setImage] = useState<File>();
+  const [color, setColor] = useState<any>();
   //window.location.href = '/secret';
 
   const uploadImage = async () => {
@@ -35,6 +36,7 @@ export default function AddMenuItem() {
         console.log(res.status);
       });
     console.log("uploaded");
+    window.location.reload();
   };
 
   const saveIceItem = async () => {
@@ -43,6 +45,7 @@ export default function AddMenuItem() {
       category: category,
       price: price,
       image: image,
+      color: color,
     };
     //  await axios.post('http://localhost:3000/save-item',item).then(res=>{
     //    if(res.status){
@@ -103,7 +106,7 @@ export default function AddMenuItem() {
           className="hidden w-[20em]"
         />
 
-        <section className="mt-14 w-fit">
+        <section className="mt-10 w-fit text-center">
           <input
             type="text"
             className="w-72 py-4 px-4 bg-[#eaeaea] focus:outline-none focus:border-[#ff4a60] focus:border-2 focus:ring-1 focus:ring-[#ff4a60] rounded-xl"
@@ -131,7 +134,7 @@ export default function AddMenuItem() {
               min="5"
               max="30"
               value={price}
-              className="mt-14 mb-14 h-2 appearance-none rounded-3xl bg-[#ff4a60] slider"
+              className="mt-14 mb-11 h-2 appearance-none rounded-3xl bg-[#ff4a60] slider"
               onChange={(e) => {
                 setPrice(e.currentTarget.value);
               }}
@@ -140,8 +143,19 @@ export default function AddMenuItem() {
               $ {price}
             </h2>
           </div>
+          <h2 className="font-semibold ml-3">Choose accent</h2>
+          <input
+            type="color"
+            className="w-[90%] my-3 rounded-full border-none"
+            name=""
+            id=""
+            onChange={(e) => {
+              setColor(e.target.value);
+              console.log(color);
+            }}
+          />
           <button
-            className="w-full bg-[#ff4a60] py-4 text-white rounded-full font-semibold"
+            className="w-full bg-[#ff4a60] py-4 text-white my-4 rounded-full font-semibold"
             onClick={() => {
               //  uploadImage();
               saveIceItem();

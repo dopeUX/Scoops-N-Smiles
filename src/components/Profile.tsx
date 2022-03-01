@@ -24,19 +24,18 @@ export default function ProfilePage() {
 
   useEffect(() => {
     try {
-      if(authCheck!=='not logged in'){
-      getLoggeInUserDetails(authCheck).then(async (res: any) => {
-        setUser(res);
-        // setEmail(res.email);
-        // setFirstName(res.firstName);
-        // setLastName(res.lastName);
-        // setAddress(res.address);
-        // setPhone(res.phone);
-      });
-     }
-     else{
-       nav('/')
-     }
+      if (authCheck !== "not logged in") {
+        getLoggeInUserDetails(authCheck).then(async (res: any) => {
+          setUser(res);
+          // setEmail(res.email);
+          // setFirstName(res.firstName);
+          // setLastName(res.lastName);
+          // setAddress(res.address);
+          // setPhone(res.phone);
+        });
+      } else {
+        nav("/");
+      }
     } catch (err) {}
   }, []);
 
@@ -146,10 +145,10 @@ export default function ProfilePage() {
             <h2 className="text-xl text-[#afadad] font-semibold">Phone</h2>
             <input
               type="tel"
-              className="w-64 mt-5 py-3 px-4 bg-[#e9e9e9] rounded-xl border-2 font-semibold focus:outline-none focus:border-[#ff4a60] focus:ring-1 focus:ring-[#ff4a60] cs:w-full"
-              value={phone || ""}
+              className="w-64 mt-5 py-3 px-4 bg-[#d3b7b7] rounded-xl border-2 font-semibold focus:outline-none focus:border-[#ff4a60] focus:ring-1 focus:ring-[#ff4a60] cs:w-full"
+              value={phone || 0}
               onChange={(e) => {
-                setPhone(e.target.valueAsNumber);
+                setPhone(Number(e.target.value));
               }}
               readOnly={contentEditable === false ? true : false}
             />

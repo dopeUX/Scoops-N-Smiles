@@ -40,12 +40,12 @@ export default function HomePage() {
     await axios.get("http://localhost:3000/auth-check", config).then((res) => {
       console.log(res.data.email);
     });
-  }
+  };
   return (
     /* //TOP PICKS SECTION */
 
-    <section className="px-0 py-5 pb-[6rem] w-full h-full md:pb-0 lg:px-20">
-      <div className="flex flex-col relative w-full h-fit md:flex-col-reverse">
+    <section className="px-0 py-5 pb-[6rem] w-full h-full md:pb-0 lg:px-20 z-40">
+      <div className="flex flex-col relative w-full h-fit md:flex-col-reverse z-40">
         <div className="top-picks-section w-full h-fit md:text-center md:mx-auto md:w-fit">
           <div className="relative pl-5 w-fit h-fit md:mx-auto md:mt-20 lg:mt-20">
             <div className="w-14 h-full z-0 right-0 absolute bg-[#ff4a60]"></div>

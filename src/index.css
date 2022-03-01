@@ -1,49 +1,51 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Anton&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'montserrat', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "montserrat", "Roboto",
+    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-.apply-filter{
-  filter: invert(53%) sepia(91%) saturate(4721%) hue-rotate(328deg) brightness(106%) contrast(100%);}
-
-.logo{
-  font-family: 'Anton', sans-serif;
+.apply-filter {
+  filter: invert(53%) sepia(91%) saturate(4721%) hue-rotate(328deg)
+    brightness(106%) contrast(100%);
 }
 
-.logo span{
+.logo {
+  font-family: "Anton", sans-serif;
+}
+
+.logo span {
   width: fit-content;
-  color: #FF4A60;
+  color: #ff4a60;
   /* font-size: 1.2rem; */
 }
-.column{
+.column {
   flex-direction: column-reverse;
 }
 
-.nav-desktop{
-  font-family: 'montserrat', sans-serif;
+.nav-desktop {
+  font-family: "montserrat", sans-serif;
 }
 
- /* PRICE SLIDER */
-.slider{
-  -webkit-appearance: none;  /* Override default CSS styles */
+/* PRICE SLIDER */
+.slider {
+  -webkit-appearance: none; /* Override default CSS styles */
   appearance: none;
   width: 80%; /* Full-width */
   height: 8px; /* Specified height */
   background: #d3d3d3; /* Grey background */
   outline: none; /* Remove outline */
   opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
-  transition: opacity .2s;
+  -webkit-transition: 0.2s; /* 0.2 seconds transition on hover */
+  transition: opacity 0.2s;
 }
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none; /* Override default look */
@@ -73,7 +75,7 @@ body {
 
 .menu > li > a {
   background: #eaeaea;
-  color: #9B9B9B;
+  color: #9b9b9b;
   display: block;
   width: 18rem;
   border-radius: 1em;
@@ -88,13 +90,13 @@ body {
   left: 0;
   opacity: 0;
   position: absolute;
-  transition: all .5s ease;
+  transition: all 0.5s ease;
   top: 35px;
   width: 100%;
 }
 
 .menu li:hover ul {
-  height:fit-content;
+  height: fit-content;
   opacity: 1;
   transform: translateY(0);
 }
@@ -104,7 +106,10 @@ body {
   display: block;
   padding: 5px 20px;
 }
+.display-popup {
+  display: none;
+}
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }

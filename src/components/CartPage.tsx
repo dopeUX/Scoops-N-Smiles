@@ -24,7 +24,12 @@ export default function CartPage() {
 
   useEffect(() => {
     try {
-      jwtVerify();
+      if (authCheck !== "not logged in") {
+        jwtVerify();
+      } else {
+        nav("/");
+      }
+
       //for preventing user to go back -------------------
       // window.history.pushState(null, document.title, window.location.href);
       // window.addEventListener("popstate", function (event) {
@@ -102,7 +107,7 @@ export default function CartPage() {
           Scoops N<span className="block mx-auto">Smiles</span>
         </h1>
       </header>
-      <div className="px-[16%] pt-5 flex justify-between ">
+      <div className="px-[16%] pt-5 flex flex-row justify-between cp:flex-col pb-10">
         <section className="flex flex-col">
           <h2 className="text-[#ff4a60] font-semibold text-lg ml-3">
             {cartItems.length} items

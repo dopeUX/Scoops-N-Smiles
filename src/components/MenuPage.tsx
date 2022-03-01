@@ -103,10 +103,10 @@ export default function MenuPage() {
   }
 
   return (
-    <div className="mt-3 ml-10">
+    <div className="mt-3 ml-10 lg:ml-20">
       {categories.map((item: any, index: number) => {
         return (
-          <section className="w-fit h-fit" key={index}>
+          <section className="w-fit h-fit " key={index}>
             <div className="flex">
               <div className="w-fit h-fit flex my-1">
                 <h1 className="font-semibold relative text-xl z-10 my-1">

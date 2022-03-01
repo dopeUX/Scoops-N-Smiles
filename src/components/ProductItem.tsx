@@ -10,13 +10,13 @@ export default function ProductItem(props) {
   //   }
   return (
     <div className="mr-7 w-fit mt-14 lg:mr-12">
-      <div className="bg-[#F3E3C6] relative text-center pt-[7.5em] pb-9 w-[160px] rounded-lg mr:w-[190px] mr:pt-[9em] mr:pb-11 lg:w-[210px] lg:pt-[12em] lg:p lg:pb-14">
+      <div className="bg-[#F3E3C6] relative text-center pt-[9.5em] pb-9 w-[160px] rounded-lg mr:w-[190px] mr:pt-[9em] mr:pb-11 lg:w-[210px] lg:pt-[13em] lg:p lg:pb-14">
         <img
           alt=""
           src={url}
-          className="w-24 h-48 object-cover absolute rounded-xl mt-[-1em] left-0 right-0 mx-auto top-0 mr:w-28 lg:w-36 shadow-xl shadow-slate-500"
+          className="w-28 h-36 object-cover absolute rounded-xl mt-[-1em] left-0 right-0 mx-auto top-0 mr:w-28 lg:w-36 lg:h-48 shadow-xl shadow-slate-500"
         ></img>
-        <h3 className="text-center font-semibold text-xs mx-2 mr:text-base lg:text-xl">
+        <h3 className="text-center font-semibold text-sm mx-4 mr:text-base lg:text-xl">
           {props.iceName}
         </h3>
         {/* <ReactStarsRating className="flex cursor-default mx-auto text-center w-fit mt-2" value={3.4} primaryColor={'#6C69F9'} isHalf={true} isEdit={false} size={16}></ReactStarsRating> */}

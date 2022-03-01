@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
+import { changeUserAuthState } from "../AppSlice";
 import getLoggeInUserDetails from "../functions/getLoggeInUserDetails";
 import updateUserDetails from "../functions/updateUserDetails";
 import verifyToken from "../functions/verifyToken";
 import { RootState } from "../store";
 
 export default function ProfilePage() {
+  const nav = useNavigate();
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -14,13 +17,14 @@ export default function ProfilePage() {
   const [user, setUser] = useState<any>({ undefined });
   const editRef: any = useRef();
   const [contentEditable, setContentEditable] = useState(false);
-
+  const dispatch = useDispatch();
   const authCheck = useSelector((state: RootState) => {
     return state.appReducer.checkUserAuth;
   });
 
   useEffect(() => {
     try {
+      if(authCheck!=='not logged in'){
       getLoggeInUserDetails(authCheck).then(async (res: any) => {
         setUser(res);
         // setEmail(res.email);
@@ -29,6 +33,10 @@ export default function ProfilePage() {
         // setAddress(res.address);
         // setPhone(res.phone);
       });
+     }
+     else{
+       nav('/')
+     }
     } catch (err) {}
   }, []);
 
@@ -43,22 +51,33 @@ export default function ProfilePage() {
     console.log(user);
   }, [user]);
 
+  function logOut() {
+    localStorage.removeItem("userToken");
+    dispatch(changeUserAuthState("not logged in"));
+    window.location.reload();
+  }
   //console.log(user);
   return (
-    <div className="w-fit mx-auto my-8 relative">
-      <img src="/assets/gamer.png" alt="" className="w-16 h-16 inline-block" />
-      <h1 className="text-[2.3vw] ml-7 font-bold inline-block w-fit cs:text-[3.6vw] cs:mr-16">
-        {email}
-      </h1>
-      <img
-        src="/assets/edit.png"
-        alt=""
-        className="w-16 absolute top-0 right-0 cursor-pointer"
-        onClick={() => {
-          setContentEditable(true);
-          editRef.current.focus();
-        }}
-      />
+    <div className="w-fit mx-auto my-8">
+      <div className="w-fit flex flex-row">
+        <img
+          src="/assets/gamer.png"
+          alt=""
+          className="w-16 h-16 inline-block"
+        />
+        <h1 className="text-[2.3vw] ml-7 font-bold inline-block w-fit cs:text-[3.6vw] cs:mr-16">
+          {email}
+        </h1>
+        <img
+          src="/assets/edit.png"
+          alt=""
+          className="w-16 ml-5 cursor-pointer"
+          onClick={() => {
+            setContentEditable(true);
+            editRef.current.focus();
+          }}
+        />
+      </div>
       <section className="mt-10 flex flex-col cs:w-full">
         <div className="flex flex-row w-fit cs:flex-col cs:w-full">
           {/* First Name */}
@@ -147,6 +166,14 @@ export default function ProfilePage() {
             Save details
           </button>
         </div>
+        <button
+          className="w-fit bg-[#ff4a60] px-32 py-3 mx-auto font-semibold text-white rounded-full mt-10"
+          onClick={() => {
+            logOut();
+          }}
+        >
+          Log out
+        </button>
       </section>
     </div>
   );

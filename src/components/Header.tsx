@@ -1,16 +1,22 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import NavbarDesktop from "./Navbar_desktop";
 import { useDispatch, useSelector } from "react-redux";
 import { changeAuthPageState } from "../AppSlice";
 import { RootState } from "../store";
 import { Link } from "react-router-dom";
+import verifyToken from "../functions/verifyToken";
 
 export default function Header() {
   const [isLoggedIn, setLoggedIn] = useState(false);
+  const [email, setEmail] = useState("");
   const dispatch = useDispatch();
   const authCheck = useSelector((state: RootState) => {
     return state.appReducer.checkUserAuth;
   });
+
+  useEffect(() => {
+    mail();
+  }, []);
   ///STYLES DEPENDING UPON USER IS LOGGED IN OR ISN'T------
   // const avatarRef:any = useRef();
   // const signInButtonRef:any= useRef();
@@ -18,6 +24,13 @@ export default function Header() {
   ///////////////
   function slideDownAuthPage() {
     dispatch(changeAuthPageState("animate-slideDown"));
+  }
+
+  async function mail() {
+    if (checkIfUserLoggedIn()) {
+      const response = await verifyToken(authCheck);
+      setEmail(response);
+    }
   }
   function checkIfUserLoggedIn(): boolean {
     if (authCheck === "not logged in") {
@@ -29,8 +42,8 @@ export default function Header() {
   }
 
   return (
-    <header className="w-full sticky px-6 py-4 bg-[rgb(248,248,248)] lg:px-20">
-      <div className="text-lg w-full h-fit flex justify-between">
+    <header className="w-full relative px-6 py-4 bg-[rgb(248,248,248)] lg:px-20">
+      <div className="text-lg w-full h-fit flex justify-between relative">
         <h1 className="w-fit logo text-center">
           Scoops N<br />
           <span>Smiles</span>
@@ -47,13 +60,14 @@ export default function Header() {
             />
           </Link>
           <Link to="/profile">
-            <img
-              src="./assets/gamer.png"
-              alt=""
-              className={`w-11 h-11 my-auto cursor-pointer ml-5 ${
-                checkIfUserLoggedIn() ? "flex" : "hidden"
-              }`}
-            />
+            <div className="w-fit h-fit cursor-pointer">
+              <img
+                src="./assets/gamer.png"
+                alt=""
+                className={`w-11 h-11 my-auto cursor-pointer ml-5
+                 ${checkIfUserLoggedIn() ? "flex" : "hidden"}`}
+              />
+            </div>
           </Link>
           <button
             onClick={() => {

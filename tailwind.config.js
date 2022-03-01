@@ -45,6 +45,9 @@ module.exports = {
        
       'mr': '769px',
       // => @media (min-width: 769px) { ... }
+      
+      'cp':{'max':'979px'},
+     // => @media (max-width : 979px) { ... } 
 
       'lg': '1024px',
       // => @media (min-width: 1024px) { ... }

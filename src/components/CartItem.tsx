@@ -34,8 +34,8 @@ export default function CartItem(props) {
               className="text-[#ff4a60] font-semibold cursor-pointer ml-7"
               onClick={() => {
                 deleteCartItem(props.email, props.item.productId);
-              }}
-            >
+               }}
+              >
               remove
             </h4>
           </div>

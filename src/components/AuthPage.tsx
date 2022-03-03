@@ -110,8 +110,10 @@ export default function AuthPage() {
           localStorage.setItem("userToken", res.data.token);
           dispatch(changeAuthPageState("animate-slideUp"));
           dispatch(changeUserAuthState(res.data.token));
-        } else {
-          alert("please enter the correct username and password");
+        } else if (res.data.user === false) {
+          alert("No such user exists");
+        } else if (res.data.status === "error logging in user") {
+          alert("please enter the correct email and password");
         }
       })
       .catch((err) => {

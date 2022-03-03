@@ -145,7 +145,7 @@ export default function ProfilePage() {
             <h2 className="text-xl text-[#afadad] font-semibold">Phone</h2>
             <input
               type="tel"
-              className="w-64 mt-5 py-3 px-4 bg-[#d3b7b7] rounded-xl border-2 font-semibold focus:outline-none focus:border-[#ff4a60] focus:ring-1 focus:ring-[#ff4a60] cs:w-full"
+              className="w-64 mt-5 py-3 px-4 bg-[#e9e9e9] rounded-xl border-2 font-semibold focus:outline-none focus:border-[#ff4a60] focus:ring-1 focus:ring-[#ff4a60] cs:w-full"
               value={phone || 0}
               onChange={(e) => {
                 setPhone(Number(e.target.value));
@@ -158,7 +158,17 @@ export default function ProfilePage() {
               contentEditable ? "bg-[#ff4a60]" : "bg-[#d2d2d2]"
             } ${contentEditable ? "cursor-pointer" : "cursor-default"}`}
             onClick={() => {
-              updateUserDetails(email, firstName, lastName, phone, address);
+              if (
+                email !== "" &&
+                firstName !== "" &&
+                lastName !== "" &&
+                phone !== 0 &&
+                address !== ""
+              ) {
+                updateUserDetails(email, firstName, lastName, phone, address);
+              } else {
+                alert("All the fields in the profile are necessary");
+              }
             }}
             disabled={contentEditable === false ? true : false}
           >

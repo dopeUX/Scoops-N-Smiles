@@ -7,9 +7,13 @@ import { RootState } from "../store";
 import axios from "axios";
 import topPicks from "../functions/getTopPicks";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import { useNavigate } from "react-router";
 
 export default function HomePage() {
+  const nav = useNavigate();
   const [items, setItems] = useState<any>([]);
+  const password = "secret123";
   useEffect(() => {
     //  axios.get("http://localhost:3000/retrieve-products/").then((res) => {
     //    setItems(res.data.items);
@@ -22,18 +26,42 @@ export default function HomePage() {
     return state.appReducer.checkUserAuth;
   });
 
-  function checkIfUserLoggedIn(itemName: string): any {
+  genSalt();
+
+  async function genSalt() {
+    const salt = bcrypt.genSaltSync(10);
+    //  console.log(salt);
+    const hashedPass = bcrypt.hashSync(
+      password,
+      "$2a$10$o021uEwQJscCwNiEX3pwSu",
+    );
+    console.log(hashedPass);
+  }
+
+  async function saveItemToCart(email: string, itemId: string) {
+    const body = {
+      email: email,
+      productId: itemId,
+    };
+    const res = await axios.post(
+      "http://localhost:3000/api/save-item-to-cart",
+      body,
+    );
+    console.log(res.data);
+  }
+
+  function checkIfUserLoggedIn(itemName: string, itemId: string): any {
     if (authCheck === "not logged in") {
       dispatch(changeAuthPageState("animate-slideDown"));
     } else {
       console.log(itemName + " order placed");
       // const tok = jwt.decode(authCheck)
       // console.log(tok)
-      jwtVerify();
+      jwtVerify(itemId);
       // console.log(check)
     }
   }
-  const jwtVerify = async () => {
+  const jwtVerify = async (itemId: string) => {
     let config = {
       headers: {
         "x-access-token": authCheck,
@@ -41,6 +69,8 @@ export default function HomePage() {
     };
     await axios.get("http://localhost:3000/auth-check", config).then((res) => {
       console.log(res.data.email);
+      saveItemToCart(res.data.email, itemId);
+      //adding a method to add item to cart --------
     });
   };
   return (
@@ -56,7 +86,7 @@ export default function HomePage() {
             </h1>
           </div>
 
-          <ul className="mt-3 pl-5 py-7 pb-10 w-full h-fit mx-auto relative flex overflow-x-scroll md:overflow-hidden md:w-fit">
+          <ul className="mt-3 pl-8 pt-3 pb-16 w-full h-fit mx-auto relative flex overflow-x-scroll md:overflow-hidden md:w-fit">
             {items.map((item: any, index: number) => {
               return (
                 <ProductItem
@@ -65,13 +95,15 @@ export default function HomePage() {
                   price={item.price}
                   color={item.color}
                   onAddToCartClick={() => {
-                    checkIfUserLoggedIn(item.iceName);
+                    checkIfUserLoggedIn(item.iceName, item._id);
                   }}
                 />
               );
             })}
           </ul>
-          <button className="hidden bg-[#6c69f9] text-white text-sm md:flex mx-auto font-semibold mt-5 px-8 py-3 border-white border-2 rounded-full shadow-lg shadow-slate-400">
+          <button className="hidden bg-[#6c69f9] text-white text-sm md:flex mx-auto font-semibold mt-5 px-8 py-3 border-white border-2 rounded-full shadow-lg shadow-slate-400" onClick={()=>{
+            nav('/menu')
+          }}>
             Explore more
           </button>
         </div>
@@ -87,7 +119,9 @@ export default function HomePage() {
             A little lick of frozen cream every now and then, goes a long, long
             way.
           </p>
-          <button className="text-black bg-white rounded-md relative z-10 px-3 py-2 text-sm font-semibold cursor-pointer mt-5 lg:text-lg lg:px-5 lg:py-4 hover:bg-black hover:text-white">
+          <button className="text-black bg-white rounded-md relative z-10 px-3 py-2 text-sm font-semibold cursor-pointer mt-5 lg:text-lg lg:px-5 lg:py-4 hover:bg-black hover:text-white" onClick={()=>{
+             nav('/menu')
+            }}>
             Explore menu
           </button>
           <img

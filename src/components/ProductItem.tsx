@@ -15,10 +15,10 @@ export default function ProductItem(props) {
   //     dispatch(changeAuthPageState("animate-slideDown"));
   //   }
   return (
-    <div className="mr-7 w-fit mt-14 lg:mr-12 hover:transition-all hover:scale-110 duration-300">
+    <div className="mr-7 w-fit mt-14 lg:mr-12  hover:transition-all hover:scale-110 duration-300">
       <div
         ref={colorRef}
-        className={`relative text-center pt-[9.5em] pb-9 w-[160px] rounded-lg mr:w-[190px] mr:pt-[9em] mr:pb-11 lg:w-[210px] lg:pt-[13em] lg:p lg:pb-14`}
+        className={`relative text-center pt-[9.5em] pb-9 w-[160px] hover:shadow-xl hover:shadow-stone-500 rounded-lg mr:w-[190px] mr:pt-[9em] mr:pb-11 lg:w-[210px] lg:pt-[13em] lg:p lg:pb-14`}
       >
         <img
           alt=""

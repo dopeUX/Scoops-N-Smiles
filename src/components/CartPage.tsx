@@ -8,6 +8,7 @@ import getCartItems from "../functions/getCartItems";
 import calculateCartTotal from "../functions/calculateCartTotal";
 import saveCartItemsToAdmin from "../functions/saveCartItemsToAdmin";
 import getLoggeInUserDetails from "../functions/getLoggeInUserDetails";
+import verifyToken from "../functions/verifyToken";
 
 export default function CartPage() {
   //temp email
@@ -41,23 +42,15 @@ export default function CartPage() {
   }, []);
 
   const jwtVerify = async () => {
-    let config = {
-      headers: {
-        "x-access-token": authCheck,
-      },
-    };
-    await axios.get("http://localhost:3000/auth-check", config).then((res) => {
-      console.log(res.data);
-      // setUser(res.data);
-      setEmail(res.data.email);
+    const email = await verifyToken(authCheck);
+    setEmail(email);
 
-      getCartItems(res.data.email).then(async (res) => {
-        setCartItems(res);
-        console.log("this is", res);
-        calculateCartTotal(res).then((response) => {
-          setSubtotal(response);
-          console.log(response);
-        });
+    await getCartItems(email).then(async (res) => {
+      setCartItems(res);
+      console.log("this is", res);
+      calculateCartTotal(res).then(async (response) => {
+        setSubtotal(response);
+        console.log(response);
       });
     });
   };

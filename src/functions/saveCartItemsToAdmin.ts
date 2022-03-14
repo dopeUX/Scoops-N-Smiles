@@ -1,12 +1,10 @@
 import axios from "axios";
 import getCartItems from "./getCartItems";
-import { useNavigate } from "react-router";
   
  export default async function saveCartItemsToAdmin(email:string,firstName:string,lastName:string, orderStatus:string,
     phone:string,address:string, time:string, cartTotal:string, cartItems:any[]){
         cartItems = await getCartItems(email);
-    
-            
+                
         const body = {
             email:email,
             name:firstName+" "+lastName,

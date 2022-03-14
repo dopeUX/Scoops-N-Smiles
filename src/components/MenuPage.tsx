@@ -4,10 +4,14 @@ import ProductItem from "./ProductItem";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
 import { changeAuthPageState } from "../AppSlice";
+import getCategories from "../functions/getCategories";
+import verifyToken from "../functions/verifyToken";
+import saveItemToCart from "../functions/saveItemToCart";
+import getProducts from "../functions/getProductItems";
 
 export default function MenuPage() {
-  const [categories, setCategories] = useState([]);
-  const [products, setProducts] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any>([]);
+  const [products, setProducts] = useState<any>([]);
   const [showLoader, setShowLoader] = useState(false);
   const dispatch = useDispatch();
   const authCheck = useSelector((state: RootState) => {
@@ -17,11 +21,6 @@ export default function MenuPage() {
     // cones : 'cones',
     // cups : 'cups'
   });
-
-  async function getCategories() {
-    const res = await axios.get("http://localhost:3000/retrieve-categories");
-    return res.data.items;
-  }
 
   useEffect(() => {
     try {
@@ -40,24 +39,12 @@ export default function MenuPage() {
   useEffect(() => {
     try {
       setShowLoader(true);
-      getProducts();
+      getProducts(setProducts);
     } catch (error) {
       setShowLoader(false);
       console.log(error);
     }
   }, []);
-
-  async function saveItemToCart(email: string, itemId: string) {
-    const body = {
-      email: email,
-      productId: itemId,
-    };
-    const res = await axios.post(
-      "http://localhost:3000/api/save-item-to-cart",
-      body,
-    );
-    console.log(res.data);
-  }
 
   function checkIfUserLoggedIn(itemName: string, itemId: string): any {
     if (authCheck === "not logged in") {
@@ -68,34 +55,9 @@ export default function MenuPage() {
     }
   }
   const jwtVerify = async (itemId: string) => {
-    let config = {
-      headers: {
-        "x-access-token": authCheck,
-      },
-    };
-    await axios.get("http://localhost:3000/auth-check", config).then((res) => {
-      console.log(res.data.email);
-      saveItemToCart(res.data.email, itemId);
-    });
+    const email = await verifyToken(authCheck);
+    saveItemToCart(email, itemId);
   };
-
-  async function getProducts() {
-    const config = {
-      headers: {
-        category: "",
-      },
-    };
-    return await axios
-      .get("http://localhost:3000/retrieve-products", config)
-      .then((res) => {
-        if (res.status === 200) {
-          setProducts(res.data.items);
-          console.log(res.data.items);
-          setShowLoader(false);
-        }
-        return res.data.items;
-      });
-  }
 
   if (showLoader) {
     console.log("...loading");

@@ -4,9 +4,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import { changeUserAuthState } from "../AppSlice";
 import axios from "axios";
-import jwt from "jsonwebtoken";
 import { GoogleLogin } from "react-google-login";
 import { useNavigate } from "react-router";
+import loginUser from "../functions/loginUser";
+import registerUser from "../functions/registerUser";
 
 export default function AuthPage() {
   const [email, setEmail] = useState("");
@@ -69,57 +70,8 @@ export default function AuthPage() {
     }
   }
   //REGISTER METHOD ----------------
-  async function registerUser(email: string, password: string) {
-    let testconfig = {
-      headers: {
-        header1: "rfrf",
-      },
-    };
-    const user = {
-      email: email,
-      password: password,
-    };
 
-    await axios
-      .post("http://localhost:3000/register/", user, testconfig)
-      .then((res) => {
-        console.log("success", res);
-        alert("sign up successfull");
-        localStorage.setItem("userToken", res.data.token);
-        dispatch(changeAuthPageState("animate-slideUp"));
-        dispatch(changeUserAuthState(res.data.token));
-        nav("/profile");
-      })
-      .catch((err) => {
-        console.log(err.response);
-      });
-  }
   //LOGIN METHOD -----------
-  async function loginUser(email: string, password: string) {
-    const user = {
-      email: email,
-      password: password,
-    };
-
-    await axios
-      .post("http://localhost:3000/login/", user)
-      .then((res) => {
-        console.log("success", res.data);
-        if (res.data.user) {
-          alert("login successful");
-          localStorage.setItem("userToken", res.data.token);
-          dispatch(changeAuthPageState("animate-slideUp"));
-          dispatch(changeUserAuthState(res.data.token));
-        } else if (res.data.user === false) {
-          alert("No such user exists");
-        } else if (res.data.status === "error logging in user") {
-          alert("please enter the correct email and password");
-        }
-      })
-      .catch((err) => {
-        console.log(err.response);
-      });
-  }
 
   return (
     <div

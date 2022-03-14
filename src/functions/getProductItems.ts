@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export default async function getProducts() {
+export default async function getProducts(setProducts) {
     const config = {
       headers: {
         category: "",
@@ -10,6 +10,7 @@ export default async function getProducts() {
       .get("http://localhost:3000/retrieve-products", config)
       .then((res) => {
         if (res.status === 200) {
+          setProducts(res.data.items)
           return res.data.items;
         }        
       });

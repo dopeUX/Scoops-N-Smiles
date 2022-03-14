@@ -4,6 +4,9 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { upload } from "@testing-library/user-event/dist/upload";
 import CategoryDropDown from "./CategoryDropDown";
+import getCategories from "../functions/getCategories";
+import createCategory from "../functions/createCategory";
+import saveIceItem from "../functions/addMenuItem";
 
 export default function AddMenuItem() {
   // const navigate = useNavigate();
@@ -13,59 +16,22 @@ export default function AddMenuItem() {
   const imageRef: any = useRef();
   const [imageSrc, setImageSrc] = useState("/assets/add-menu-item.png");
   const [iceName, setIceName] = useState("");
-  const [category, setCategory] = useState("def");
+  const [category, setCategory] = useState("");
+  const catInputRef: any = useRef();
+  const dropDownRef: any = useRef();
   const [image, setImage] = useState<File>();
   const [color, setColor] = useState<any>();
+  const [categories, setCategories] = useState<any[]>([]);
   //window.location.href = '/secret';
+  let i = 0;
 
-  const uploadImage = async () => {
-    const data: any = new FormData();
-    data.append("image", image);
-    data.append("iceName", iceName);
-    //  OPTIONAL HEADERS
-    const config = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    };
-    console.log("uploading");
-    await axios
-      .put("http://localhost:3000/upload", data, config)
-      .then((res) => {
-        console.log(res.data);
-        console.log(res.status);
-      });
-    console.log("uploaded");
-    window.location.reload();
-  };
-
-  const saveIceItem = async () => {
-    const item = {
-      iceName: iceName,
-      category: category,
-      price: price,
-      image: image,
-      color: color,
-    };
-    //  await axios.post('http://localhost:3000/save-item',item).then(res=>{
-    //    if(res.status){
-    //      uploadImage();
-    //    }
-    //  });
-    const response = await axios.post("http://localhost:3000/save-item", item);
-    if (response.status) {
-      uploadImage();
-    }
-  };
-
-  const saveCategory = async () => {
-    const ct = {
-      cat: category,
-    };
-    await axios.put("http://localhost:3000/save-category", ct).then((res) => {
-      console.log(res.data);
+  useEffect(() => {
+    //getCategories();
+    getCategories().then((res) => {
+      setCategories(res);
     });
-  };
+  }, []);
+
   return (
     <div className="relative h-full">
       <header className="w-full h-fit bg-[#f1f1f1] flex justify-between px-[25%] py-5">
@@ -106,7 +72,7 @@ export default function AddMenuItem() {
           className="hidden w-[20em]"
         />
 
-        <section className="mt-10 w-fit text-center">
+        <section className="mt-3 w-fit text-center">
           <input
             type="text"
             className="w-72 py-4 px-4 bg-[#eaeaea] focus:outline-none focus:border-[#ff4a60] focus:border-2 focus:ring-1 focus:ring-[#ff4a60] rounded-xl"
@@ -118,16 +84,103 @@ export default function AddMenuItem() {
             }}
           />
 
-          <input
-            type="text"
-            className="w-72 py-4 px-4 bg-[#eaeaea] focus:outline-none focus:border-[#ff4a60] focus:border-2 focus:ring-1 focus:ring-[#ff4a60] rounded-xl block mt-9"
-            placeholder="Category"
-            name=""
-            id=""
-            onChange={(e) => {
-              setCategory(e.currentTarget.value);
-            }}
-          />
+          <div className="w-fit flex mt-9 relative align-middle">
+            <input
+              type="text"
+              className="w-72 py-4 px-4 bg-[#eaeaea] focus:outline-none focus:border-[#ff4a60] focus:border-2 focus:ring-1 focus:ring-[#ff4a60] rounded-xl block"
+              placeholder="Category"
+              name=""
+              id=""
+              readOnly={true}
+              value={category}
+              // onChange={(e) => {
+              //   setCategory(e.currentTarget.value);
+              // }}
+            />
+            <img
+              src="/assets/back.png"
+              className="w-12 h-12 absolute cursor-pointer top-1 right-3"
+              onClick={() => {
+                //condition ---------
+                if (i === 0) {
+                  dropDownRef.current.style.animation =
+                    "slide-down .5s ease forwards";
+                  dropDownRef.current.style.display = "flex";
+                  i = 1;
+                } else {
+                  dropDownRef.current.style.display = "none";
+                  i = 0;
+                }
+              }}
+              alt=""
+            />
+            <img
+              src="/assets/add.png"
+              className="w-10 h-10 absolute right-[-4em] my-auto mt-2 cursor-pointer"
+              alt="Create category"
+              onClick={() => {
+                catInputRef.current.style.display = "block";
+              }}
+            />
+            <div
+              ref={dropDownRef}
+              className="w-full hidden flex-col text-left top-[3rem] py-3 pl-3 z-10 border-[#6c69f9] border-2 ring-1  bg-white absolute rounded-lg shadow-lg shadow-stone-500"
+            >
+              {categories.map((item: any, index: number) => {
+                return (
+                  <h1
+                    key={index}
+                    className="font-semibold text-lg my-2 cursor-pointer"
+                    onClick={() => {
+                      setCategory(item.category);
+                      dropDownRef.current.style.display = "none";
+                    }}
+                  >
+                    {item.category}
+                  </h1>
+                );
+              })}
+            </div>
+          </div>
+
+          <div ref={catInputRef} className="relative hidden">
+            <input
+              type="text"
+              className="w-72 py-4 px-4 bg-[#eaeaea] focus:outline-none focus:border-[#ff4a60] mt-7 focus:border-2 focus:ring-1 focus:ring-[#ff4a60] rounded-xl block"
+              placeholder="Create category"
+              name=""
+              id=""
+              value={category}
+              onChange={(e) => {
+                setCategory(e.currentTarget.value);
+              }}
+            />
+            <div className="flex absolute w-fit top-2 right-[-8.3em]">
+              <img
+                src="/assets/close-black.png"
+                className="w-10 h-10 cursor-pointer mr-7"
+                alt=""
+                onClick={() => {
+                  catInputRef.current.style.display = "none";
+                }}
+              />
+              <img
+                src="/assets/tick-blue.png"
+                className="w-10 h-10 cursor-pointer"
+                alt=""
+                onClick={async () => {
+                  if (category !== "") {
+                    createCategory(category, setCategories);
+                    setCategory("");
+                    catInputRef.current.style.display = "none";
+                  } else {
+                    alert("category should not be left empty");
+                  }
+                }}
+              />
+            </div>
+          </div>
+
           <div className="flex flex-row justify-between">
             <input
               type="range"
@@ -158,7 +211,11 @@ export default function AddMenuItem() {
             className="w-full bg-[#ff4a60] py-4 text-white my-4 rounded-full font-semibold"
             onClick={() => {
               //  uploadImage();
-              saveIceItem();
+              if (iceName !== "" && category !== "" && image !== undefined) {
+                saveIceItem(iceName, category, price,color,image);
+              } else {
+                alert("all the details are necessary");
+              }
               //saveCategory();
             }}
           >

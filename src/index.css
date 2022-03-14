@@ -109,6 +109,28 @@ body {
 .display-popup {
   display: none;
 }
+
+@keyframes slide-down {
+  from {
+    /* display: none; */
+    top: 2.5rem;
+  }
+  to {
+    top: 3rem;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 1;
+    top: 3rem;
+  }
+  to {
+    top: 2.5rem;
+    opacity: 0;
+    visibility: hidden;
+  }
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;

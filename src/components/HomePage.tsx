@@ -9,6 +9,7 @@ import topPicks from "../functions/getTopPicks";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { useNavigate } from "react-router";
+import verifyToken from "../functions/verifyToken";
 
 export default function HomePage() {
   const nav = useNavigate();
@@ -26,17 +27,6 @@ export default function HomePage() {
     return state.appReducer.checkUserAuth;
   });
 
-  genSalt();
-
-  async function genSalt() {
-    const salt = bcrypt.genSaltSync(10);
-    //  console.log(salt);
-    const hashedPass = bcrypt.hashSync(
-      password,
-      "$2a$10$o021uEwQJscCwNiEX3pwSu",
-    );
-    console.log(hashedPass);
-  }
 
   async function saveItemToCart(email: string, itemId: string) {
     const body = {
@@ -45,7 +35,7 @@ export default function HomePage() {
     };
     const res = await axios.post(
       "http://localhost:3000/api/save-item-to-cart",
-      body,
+       body,
     );
     console.log(res.data);
   }
@@ -62,16 +52,8 @@ export default function HomePage() {
     }
   }
   const jwtVerify = async (itemId: string) => {
-    let config = {
-      headers: {
-        "x-access-token": authCheck,
-      },
-    };
-    await axios.get("http://localhost:3000/auth-check", config).then((res) => {
-      console.log(res.data.email);
-      saveItemToCart(res.data.email, itemId);
-      //adding a method to add item to cart --------
-    });
+    const email = await verifyToken(authCheck);
+    await saveItemToCart(email, itemId);
   };
   return (
     /* //TOP PICKS SECTION */

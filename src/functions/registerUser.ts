@@ -10,7 +10,7 @@ export default async function registerUser(email: string, password: string) {
     };
 
     await axios
-      .post("http://localhost:3000/register/", user)
+      .post("http://localhost:3000/api/register/", user)
       .then((res) => {
         console.log("success");
         alert("sign up successfull");

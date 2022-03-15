@@ -5,7 +5,7 @@ import getCategories from "./getCategories";
     const ct = {
       cat: category,
     };
-    return await axios.put("http://localhost:3000/save-category", ct).then((res) => {
+    return await axios.put("http://localhost:3000/api/save-category", ct).then((res) => {
       if (res.status === 200) {
         console.log(res.data);
          getCategories().then((res) => {

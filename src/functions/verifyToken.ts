@@ -6,7 +6,7 @@ export default async function verifyToken(token:string){
           "x-access-token": token,
         },
       };
-   return await axios.get('http://localhost:3000/auth-check',config).then(res=>{
+   return await axios.get('http://localhost:3000/api/auth-check',config).then(res=>{
        if(res.status===200){
          console.log(res.data.email)  
          return res.data.email; 

@@ -37,7 +37,7 @@ export default function AuthPage() {
     // console.log(res.tokenId);
     //calling google login api---------
     await axios
-      .post("http://localhost:3000/google-login", { token: res.tokenId })
+      .post("http://localhost:3000/api/google-login", { token: res.tokenId })
       .then((response) => {
         console.log(response.data);
         if (response.data.user) {

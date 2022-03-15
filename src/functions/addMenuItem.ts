@@ -12,7 +12,7 @@ const uploadImage = async (image:File,iceName:string) => {
     };
     console.log("uploading");
     await axios
-      .put("http://localhost:3000/upload", data, config)
+      .put("http://localhost:3000/api/upload", data, config)
       .then((res) => {
         console.log(res.data);
         console.log(res.status);
@@ -33,7 +33,7 @@ const uploadImage = async (image:File,iceName:string) => {
     //      uploadImage();
     //    }
     //  });
-    const response = await axios.post("http://localhost:3000/save-item", item);
+    const response = await axios.post("http://localhost:3000/api/save-item", item);
     if (response.status) {
       uploadImage(image,iceName);
     }

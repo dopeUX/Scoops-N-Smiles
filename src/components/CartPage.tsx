@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import CartItem from "./CartItem";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
 import getCartItems from "../functions/getCartItems";
 import calculateCartTotal from "../functions/calculateCartTotal";
@@ -14,14 +15,18 @@ export default function CartPage() {
   //temp email
   const [email, setEmail] = useState("");
   const [cartItems, setCartItems] = useState([]);
+  const [itemsHead, setItemsHead] = useState("Serving your items...");
+  // const [itemsHeadStyle, setItemsHeadStyle] = useState("");
+  const [areItemsZero, setAreItemsZero] = useState(true);
   const [user, setUser] = useState<any>({});
+  const [total, setTotal] = useState(1);
   const nav = useNavigate();
-  const [subtotal, setSubtotal] = useState(0);
+  const [subtotal, setSubtotal] = useState(1);
   // const [products, setProducts] = useState<any[]>([]);
   const authCheck = useSelector((state: RootState) => {
     return state.appReducer.checkUserAuth;
   });
-  let total = subtotal === 0 ? 0 : 0.05 * subtotal + subtotal + 20;
+  // let total = subtotal === 0 ? 0 : 0.05 * subtotal + subtotal + 20;
 
   useEffect(() => {
     try {
@@ -41,6 +46,16 @@ export default function CartPage() {
     }
   }, []);
 
+  useEffect(() => {
+    setTotal(subtotal === 0 ? 0 : 0.05 * subtotal + subtotal + 20);
+    if (subtotal === 0) {
+      setAreItemsZero(true);
+    } else {
+      setAreItemsZero(false);
+    }
+    console.log(total);
+  }, [subtotal]);
+
   const jwtVerify = async () => {
     const email = await verifyToken(authCheck);
     setEmail(email);
@@ -50,6 +65,9 @@ export default function CartPage() {
       console.log("this is", res);
       calculateCartTotal(res).then(async (response) => {
         setSubtotal(response);
+        setItemsHead(res.length + " items");
+        //const t =  subtotal === 0 ? 0 : 0.05 * subtotal + subtotal + 20;
+
         console.log(response);
       });
     });
@@ -71,17 +89,34 @@ export default function CartPage() {
       ":" +
       currentdate.getSeconds();
     const user = await getLoggeInUserDetails(authCheck);
-    saveCartItemsToAdmin(
-      user.email,
-      user.firstName,
-      user.lastName,
-      "active",
-      user.phone,
-      user.address,
-      datetime,
-      "$" + total,
-      cartItems,
-    );
+
+    if (
+      user.firstName === "" ||
+      user.lastName === "" ||
+      user.phone === 0 ||
+      user.address === ""
+    ) {
+      alert(
+        "Please save your account details properly before placing your order",
+      );
+      nav("/profile");
+    } else {
+      try {
+        saveCartItemsToAdmin(
+          user.email,
+          user.firstName,
+          user.lastName,
+          "active",
+          user.phone,
+          user.address,
+          datetime,
+          "$" + total,
+          cartItems,
+        );
+      } catch (err: any) {
+        console.log(err.message);
+      }
+    }
   };
 
   return (
@@ -100,11 +135,31 @@ export default function CartPage() {
           Scoops N<span className="block mx-auto">Smiles</span>
         </h1>
       </header>
+
       <div className="px-[16%] pt-5 flex flex-row justify-between cp:flex-col pb-10">
         <section className="flex flex-col">
-          <h2 className="text-[#ff4a60] font-semibold text-lg ml-3">
-            {cartItems.length} items
+          <h2
+            className={`text-[#ff4a60] font-semibold text-lg ml-3 ${
+              areItemsZero ? "hidden" : "block"
+            }`}
+          >
+            {/* {cartItems.length} items */}
+            {itemsHead}
           </h2>
+          <div
+            className={`${
+              areItemsZero ? "block" : "hidden"
+            } text-left tab:mx-auto tab:text-center`}
+          >
+            <h1 className="text-xl font-bold w-64 mt-10">
+              Oops ! Your cart seems to be empty, why not explore our menu?
+            </h1>
+            <Link to="/menu">
+              <button className="bg-black mt-10 px-7 py-3 text-white rounded-lg hover:transition-all hover:scale-110 duration-300">
+                Explore menu
+              </button>
+            </Link>
+          </div>
           {cartItems.map((item: any, index: number) => {
             return <CartItem key={index} item={item} email={email} />;
           })}

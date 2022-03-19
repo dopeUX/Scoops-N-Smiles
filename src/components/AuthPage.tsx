@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { changeAuthPageState } from "../AppSlice";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../store";
+import store, { RootState } from "../store";
 import { changeUserAuthState } from "../AppSlice";
+import { changeIsLoading, changeLoadingState } from "../AppSlice";
 import axios from "axios";
 import { GoogleLogin } from "react-google-login";
 import { useNavigate } from "react-router";
 import loginUser from "../functions/loginUser";
 import registerUser from "../functions/registerUser";
+import TextTransition, { presets } from "react-text-transition";
 
 export default function AuthPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("testuser123@gmail.com");
+  const [password, setPassword] = useState("secret123");
   const [confirmPass, setConfirmPass] = useState("");
   const nav = useNavigate();
   const [cp, setcp] = useState("hidden");
@@ -30,6 +32,19 @@ export default function AuthPage() {
   const secretKey: string | undefined = process.env.REACT_APP_JWT_SECRET_KEY!;
   // console.log(secretKey+" "+clientId)
   // console.log(process.env.REACT_APP_SECRET_NAME);
+  const quotes = [
+    "Without ice cream, there would be darkness and chaos.",
+    "There were some problems only coffee and ice cream could fix.",
+    "I guess ice cream is one of those things that are beyond imagination.",
+    "Tomorrow, we can eat broccoli, but today is for ice cream",
+  ];
+  const authors = [
+    "Don Kardong",
+    " Amal El-Mohtar",
+    "L.M. Montgomery",
+    "Malory Hobson",
+  ];
+  const [textIndex, setTextIndex] = useState(0)!;
 
   const googleSignInSuccess = async (res: any) => {
     console.log(res.profileObj.email);
@@ -37,7 +52,9 @@ export default function AuthPage() {
     // console.log(res.tokenId);
     //calling google login api---------
     await axios
-      .post("http://localhost:3000/api/google-login", { token: res.tokenId })
+      .post(process.env.REACT_APP_REPL_HOST + "/api/google-login", {
+        token: res.tokenId,
+      })
       .then((response) => {
         console.log(response.data);
         if (response.data.user) {
@@ -73,25 +90,59 @@ export default function AuthPage() {
 
   //LOGIN METHOD -----------
 
+  useEffect(() => {
+    const intervalId = setInterval(
+      () => setTextIndex((textIndex) => textIndex + 1),
+      4000, // every 3 seconds
+    );
+    return () => clearTimeout(intervalId);
+  });
+
   return (
     <div
-      className={`w-full fixed z-50 ${authPageState} bg-black h-fit top-[-45em]`}
+      className={`w-full fixed z-[49] ${authPageState} bg-black h-fit top-[-45em] rounded-b-2xl`}
     >
       <div className="w-fit h-fit mx-auto my-8 pb-1 flex flex-row">
         {/* logo section   */}
-        <section className="flex flex-col justify-center text-center">
+        <section className="flex flex-col justify-center text-center tab:hidden">
           <h1 className="w-fit text-white logo text-center text-5xl">
             Scoops N <br />
             <span className="mt-2">Smiles</span>
           </h1>
-          <p className="text-[#AFAFAF] font-semibold w-56 ml-[-1.4em] mt-10">
+          <TextTransition
+            //className="text-[#AFAFAF] font-semibold w-44 ml-[-1.4em] mt-10"
+            text={quotes[textIndex % quotes.length]}
+            springConfig={presets.wobbly}
+            style={{
+              color: "#afafaf",
+              width: "13rem",
+              marginLeft: "-1.4em",
+              fontWeight: "600",
+              marginTop: "2.5rem",
+            }}
+          />
+          <TextTransition
+            // className="text-[#afafaf] font-semibold ml-[-1.4em] mt-5"
+            text={" - " + authors[textIndex % authors.length]}
+            springConfig={presets.wobbly}
+            style={{
+              color: "#afafaf",
+              // width: "13rem",
+              marginLeft: "auto",
+              marginRight: "auto",
+              fontWeight: "600",
+              marginTop: "1.4rem",
+            }}
+          />
+          {/* <p className="text-[#AFAFAF] font-semibold w-56 ml-[-1.4em] mt-10">
             "Without ice cream, there would be darkness and chaos."
           </p>
           <p className="text-[#afafaf] font-semibold ml-[-1.4em] mt-5">
             -Don Cardong
-          </p>
+          </p> */}
         </section>
-        <div className="w-1 rounded-lg mx-20 bg-[#afafaf]"></div>
+
+        <div className="w-1 rounded-lg mx-20 bg-[#afafaf] tab:hidden"></div>
         {/* auth section */}
         <section className="w-fit flex flex-col text-left">
           <h2 className="w-fit text-white font-bold text-2xl text-center">
@@ -101,16 +152,18 @@ export default function AuthPage() {
             onChange={(e) => {
               setEmail(e.target.value);
             }}
+            value={email}
             type="text"
-            className="w-64 bg-[#414141] text-white font-semibold text-sm rounded-md pl-4 py-4 my-6 mb-0"
+            className="w-64 bg-[#414141] text-white font-semibold text-sm rounded-md pl-4 py-4 my-6 mb-0 tab:mx-auto"
             placeholder="email"
           />
           <input
             onChange={(e) => {
               setPassword(e.target.value);
             }}
+            value={password}
             type="password"
-            className="w-64 bg-[#414141] text-white font-semibold text-sm rounded-md pl-4 py-4 my-6"
+            className="w-64 bg-[#414141] text-white font-semibold text-sm rounded-md pl-4 py-4 my-6 tab:mx-auto"
             placeholder="password"
           />
           <input
@@ -118,7 +171,7 @@ export default function AuthPage() {
               setConfirmPass(e.target.value);
             }}
             type="password"
-            className={`w-64 bg-[#414141] text-white font-semibold text-sm rounded-md pl-4 py-4 mb-6 ${cp}`}
+            className={`w-64 bg-[#414141] text-white font-semibold text-sm rounded-md pl-4 py-4 mb-6 ${cp} tab:mx-auto`}
             placeholder="confirm password"
           />
           <button
@@ -143,7 +196,7 @@ export default function AuthPage() {
                 }
               }
             }}
-            className="w-fit bg-[#6c69f9] text-white px-9 py-4 ml-0 mr-auto rounded-md text-sm font-semibold"
+            className="w-fit bg-[#6c69f9] text-white px-9 py-4 ml-0 mr-auto rounded-md text-sm font-semibold tab:mx-auto"
           >
             {submitButton}
           </button>
@@ -160,7 +213,7 @@ export default function AuthPage() {
             render={(renderProps) => (
               <div
                 onClick={renderProps.onClick}
-                className="w-fit cursor-pointer text-black ml-0 mr-auto px-4 py-2 my-6 rounded-md bg-white flex font-sm font-semibold"
+                className="w-fit cursor-pointer text-black ml-0 mr-auto px-4 py-2 my-6 rounded-md bg-white flex font-sm font-semibold tab:mx-auto"
               >
                 <span className="my-auto h-fit text-sm w-fit">
                   Sign in with google

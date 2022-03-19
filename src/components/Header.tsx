@@ -44,10 +44,12 @@ export default function Header() {
   return (
     <header className="w-full relative px-6 py-4 bg-[rgb(248,248,248)] lg:px-20">
       <div className="text-lg w-full h-fit flex justify-between relative">
-        <h1 className="w-fit logo text-center">
-          Scoops N<br />
-          <span>Smiles</span>
-        </h1>
+        <Link to="/">
+          <h1 className="w-fit logo text-center cursor-pointer">
+            Scoops N<br />
+            <span>Smiles</span>
+          </h1>
+        </Link>
         <NavbarDesktop />
         <div className="flex">
           <Link to="/cart">

@@ -27,15 +27,14 @@ export default function HomePage() {
     return state.appReducer.checkUserAuth;
   });
 
-
   async function saveItemToCart(email: string, itemId: string) {
     const body = {
       email: email,
       productId: itemId,
     };
     const res = await axios.post(
-      "http://localhost:3000/api/save-item-to-cart",
-       body,
+      process.env.REACT_APP_REPL_HOST + "/api/save-item-to-cart",
+      body,
     );
     console.log(res.data);
   }
@@ -83,9 +82,12 @@ export default function HomePage() {
               );
             })}
           </ul>
-          <button className="hidden bg-[#6c69f9] text-white text-sm md:flex mx-auto font-semibold mt-5 px-8 py-3 border-white border-2 rounded-full shadow-lg shadow-slate-400" onClick={()=>{
-            nav('/menu')
-          }}>
+          <button
+            className="hidden bg-[#6c69f9] text-white text-sm md:flex mx-auto font-semibold mt-5 px-8 py-3 border-white border-2 rounded-full shadow-lg shadow-slate-400"
+            onClick={() => {
+              nav("/menu");
+            }}
+          >
             Explore more
           </button>
         </div>
@@ -101,9 +103,12 @@ export default function HomePage() {
             A little lick of frozen cream every now and then, goes a long, long
             way.
           </p>
-          <button className="text-black bg-white rounded-md relative z-10 px-3 py-2 text-sm font-semibold cursor-pointer mt-5 lg:text-lg lg:px-5 lg:py-4 hover:bg-black hover:text-white" onClick={()=>{
-             nav('/menu')
-            }}>
+          <button
+            className="text-black bg-white rounded-md relative z-10 px-3 py-2 text-sm font-semibold cursor-pointer mt-5 lg:text-lg lg:px-5 lg:py-4 hover:bg-black hover:text-white"
+            onClick={() => {
+              nav("/menu");
+            }}
+          >
             Explore menu
           </button>
           <img
@@ -192,8 +197,8 @@ export default function HomePage() {
                   />
                 </div>
                 <p className="w-72 text-[#505050] ml-2 mt-3 font-medium text-sm">
-                  I’m eating the entire pint now so that it won’t be able to
-                  tempt me later.
+                  Ice cream never judges. Neither does it discriminate nor
+                  disappoint. It always understands.
                 </p>
               </div>
             </li>
@@ -206,7 +211,7 @@ export default function HomePage() {
                     className="w-10 rounded-full"
                   />
                   <h3 className="w-fit mx-5 text-[#ff4a60] my-auto font-semibold">
-                    Jane Doe
+                    Oscar Fisher
                   </h3>
                   <img
                     alt=""
@@ -215,8 +220,8 @@ export default function HomePage() {
                   />
                 </div>
                 <p className="w-72 text-[#505050] ml-2 mt-3 font-medium text-sm">
-                  I’m eating the entire pint now so that it won’t be able to
-                  tempt me later.
+                  The only reason I don’t want to go to hell is because there’s
+                  probably no ice cream there.
                 </p>
               </div>
             </li>

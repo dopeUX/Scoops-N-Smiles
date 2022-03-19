@@ -1,6 +1,8 @@
 import axios from "axios";
+import store from "../store";
+import { changeIsLoading, changeLoadingState } from "../AppSlice";
 
-const uploadImage = async (image:File,iceName:string) => {
+const uploadImage = async (image:File,iceName:string, setNav:any) => {
     const data: any = new FormData();
     data.append("image", image);
     data.append("iceName", iceName);
@@ -12,16 +14,20 @@ const uploadImage = async (image:File,iceName:string) => {
     };
     console.log("uploading");
     await axios
-      .put("http://localhost:3000/api/upload", data, config)
+      .put(process.env.REACT_APP_REPL_HOST+"/api/upload", data, config)
       .then((res) => {
         console.log(res.data);
         console.log(res.status);
+        
       });
     console.log("uploaded");
-    window.location.reload();
+    setNav()
+    // window.location.reload();
   };
 
-  const saveIceItem = async (iceName:string, category:string, price:string, color:any, image:File) => {
+  const saveIceItem = async (iceName:string, category:string, price:string, color:any, image:File, setNav:any) => {
+    store.dispatch(changeLoadingState('fixed'));
+    store.dispatch(changeIsLoading(true))
     const item = {
       iceName: iceName,
       category: category,
@@ -33,10 +39,12 @@ const uploadImage = async (image:File,iceName:string) => {
     //      uploadImage();
     //    }
     //  });
-    const response = await axios.post("http://localhost:3000/api/save-item", item);
+    const response = await axios.post(process.env.REACT_APP_REPL_HOST+"/api/save-item", item);
     if (response.status) {
-      uploadImage(image,iceName);
+      await uploadImage(image,iceName, setNav);
     }
+    store.dispatch(changeLoadingState('hidden'));
+    store.dispatch(changeIsLoading(false));
   };
 
   export default saveIceItem;

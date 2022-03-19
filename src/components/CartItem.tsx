@@ -5,7 +5,7 @@ export default function CartItem(props) {
   const [iceName, setIceName] = useState("");
   const [quantity, setQuantity] = useState(1);
   const imageUrl =
-    "http://localhost:3000/uploads/" + props.item.iceName + ".jpg";
+    process.env.REACT_APP_REPL_HOST + "/uploads/" + props.item.iceName + ".jpg";
   // let quantity: number = 3;
   useEffect(() => {
     setIceName(props.item.iceName);

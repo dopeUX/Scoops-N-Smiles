@@ -125,7 +125,7 @@ export default function ProfilePage() {
           <h2 className="text-xl text-[#afadad] font-semibold">Address</h2>
           <input
             type="text"
-            className="w-full mt-5 py-3 px-4 bg-[#e9e9e9] border-2 focus:outline focus:border-[#ff4a60] focus:ring-1 focus:ring-[#ff4a60] rounded-xl font-semibold"
+            className="w-full mt-5 py-3 px-4 bg-[#e9e9e9] border-2 focus:outline-none focus:border-[#ff4a60] focus:ring-1 focus:ring-[#ff4a60] rounded-xl font-semibold"
             value={address || ""}
             onChange={(e) => {
               setAddress(e.target.value);

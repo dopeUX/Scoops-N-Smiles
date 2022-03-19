@@ -5,7 +5,8 @@ import { useEffect, useRef } from "react";
 
 export default function ProductItem(props) {
   const dispatch = useDispatch();
-  const url = "http://localhost:3000/uploads/" + props.iceName + ".jpg";
+  const url =
+    process.env.REACT_APP_REPL_HOST + "/uploads/" + props.iceName + ".jpg";
   const colorRef: any = useRef("#EFD9B2");
 
   useEffect(() => {

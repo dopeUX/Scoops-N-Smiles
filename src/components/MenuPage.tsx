@@ -2,8 +2,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import ProductItem from "./ProductItem";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../store";
-import { changeAuthPageState } from "../AppSlice";
+import store, { RootState } from "../store";
+import {
+  changeAuthPageState,
+  changeIsLoading,
+  changeLoadingState,
+} from "../AppSlice";
 import getCategories from "../functions/getCategories";
 import verifyToken from "../functions/verifyToken";
 import saveItemToCart from "../functions/saveItemToCart";
@@ -25,22 +29,32 @@ export default function MenuPage() {
   useEffect(() => {
     try {
       setShowLoader(true);
+      store.dispatch(changeIsLoading(true));
+      store.dispatch(changeLoadingState("fixed"));
       getCategories().then((res) => {
         setCategories(res);
         setShowLoader(false);
+        store.dispatch(changeIsLoading(false));
+        store.dispatch(changeLoadingState("hidden"));
         console.log("state changed");
       });
     } catch (error) {
       setShowLoader(false);
+      store.dispatch(changeIsLoading(false));
+      store.dispatch(changeLoadingState("hidden"));
       console.error("unable to get categories", error);
     }
   }, []);
 
   useEffect(() => {
     try {
+      store.dispatch(changeIsLoading(true));
+      store.dispatch(changeLoadingState("fixed"));
       setShowLoader(true);
       getProducts(setProducts);
     } catch (error) {
+      store.dispatch(changeIsLoading(false));
+      store.dispatch(changeLoadingState("hidden"));
       setShowLoader(false);
       console.log(error);
     }

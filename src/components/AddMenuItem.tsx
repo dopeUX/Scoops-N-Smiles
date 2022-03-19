@@ -12,6 +12,7 @@ export default function AddMenuItem() {
   // const navigate = useNavigate();
   // const location = useLocation();
   // const state = location.state;
+  const nav = useNavigate();
   const [price, setPrice] = useState("5");
   const imageRef: any = useRef();
   const [imageSrc, setImageSrc] = useState("/assets/add-menu-item.png");
@@ -20,7 +21,7 @@ export default function AddMenuItem() {
   const catInputRef: any = useRef();
   const dropDownRef: any = useRef();
   const [image, setImage] = useState<File>();
-  const [color, setColor] = useState<any>();
+  const [color, setColor] = useState<any>("#e1cbcb");
   const [categories, setCategories] = useState<any[]>([]);
   //window.location.href = '/secret';
   let i = 0;
@@ -31,6 +32,12 @@ export default function AddMenuItem() {
       setCategories(res);
     });
   }, []);
+
+  function setNav() {
+    // nav("/secret/", { replace: true });
+    // console.log("yegfygfuyegfe");
+    window.location.reload();
+  }
 
   return (
     <div className="relative h-full">
@@ -202,6 +209,7 @@ export default function AddMenuItem() {
             className="w-[90%] my-3 rounded-full border-none"
             name=""
             id=""
+            value={color}
             onChange={(e) => {
               setColor(e.target.value);
               console.log(color);
@@ -212,7 +220,7 @@ export default function AddMenuItem() {
             onClick={() => {
               //  uploadImage();
               if (iceName !== "" && category !== "" && image !== undefined) {
-                saveIceItem(iceName, category, price,color,image);
+                saveIceItem(iceName, category, price, color, image, setNav);
               } else {
                 alert("all the details are necessary");
               }

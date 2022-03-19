@@ -1,4 +1,6 @@
 # Getting Started with Create React App
+![FMNyo1jXsAYzbde](https://user-images.githubusercontent.com/93445494/159128040-0e952f37-d887-4447-85fb-b63f900c02ce.jpg)
+
 [Scoops N Smiles Server Code](https://replit.com/@UXNation/scoops-n-smiles-server)
 
 [Live Demo](https://scoopsnsmiles.netlify.app/)

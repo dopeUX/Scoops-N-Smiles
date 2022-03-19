@@ -1,4 +1,6 @@
 # Getting Started with Create React App
+[Scoops N Smiles Server Code](https://replit.com/@UXNation/scoops-n-smiles-server)
+[Live Demo](https://scoopsnsmiles.netlify.app/)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

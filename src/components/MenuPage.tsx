@@ -66,7 +66,7 @@ export default function MenuPage() {
     } else {
       // console.log(itemName + " order placed");
       await jwtVerify(itemId);
-      toast(itemName + "added to cart");
+      toast(itemName + " added to cart");
       // alert(itemName + " added to cart");
     }
   }

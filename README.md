@@ -5,6 +5,18 @@
 
 [Live Demo](https://scoopsnsmiles.netlify.app/)
 
+ROUTES --
+Public routes -
+https://scoopsnsmiles.netlify.app/
+https://scoopsnsmiles.netlify.app/menu
+https://scoopsnsmiles.netlify.app/stores
+https://scoopsnsmiles.netlify.app/about
+
+Private routes -
+https://scoopsnsmiles.netlify.app/profile
+https://scoopsnsmiles.netlify.app/cart
+https://scoopsnsmiles.netlify.app/secret
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

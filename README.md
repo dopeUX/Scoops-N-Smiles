@@ -1,4 +1,29 @@
 # Getting Started with Create React App
+![FMNyo1jXsAYzbde](https://user-images.githubusercontent.com/93445494/159128040-0e952f37-d887-4447-85fb-b63f900c02ce.jpg)
+
+[Scoops N Smiles Server Code](https://scoops-n-smiles-server.uxnation.repl.co/)
+
+[Live Demo](https://scoopsnsmiles.netlify.app/)
+
+ROUTES --
+
+Public routes -
+
+https://scoopsnsmiles.netlify.app/
+
+https://scoopsnsmiles.netlify.app/menu
+
+https://scoopsnsmiles.netlify.app/stores
+
+https://scoopsnsmiles.netlify.app/about
+
+Private routes -
+
+https://scoopsnsmiles.netlify.app/profile
+
+https://scoopsnsmiles.netlify.app/cart
+
+https://scoopsnsmiles.netlify.app/secret
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

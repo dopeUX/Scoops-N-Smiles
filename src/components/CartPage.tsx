@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import CartItem from "./CartItem";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
 import getCartItems from "../functions/getCartItems";
@@ -12,21 +11,16 @@ import getLoggeInUserDetails from "../functions/getLoggeInUserDetails";
 import verifyToken from "../functions/verifyToken";
 
 export default function CartPage() {
-  //temp email
   const [email, setEmail] = useState("");
   const [cartItems, setCartItems] = useState([]);
   const [itemsHead, setItemsHead] = useState("Serving your items...");
-  // const [itemsHeadStyle, setItemsHeadStyle] = useState("");
   const [areItemsZero, setAreItemsZero] = useState(true);
-  const [user, setUser] = useState<any>({});
   const [total, setTotal] = useState(1);
   const nav = useNavigate();
   const [subtotal, setSubtotal] = useState(1);
-  // const [products, setProducts] = useState<any[]>([]);
   const authCheck = useSelector((state: RootState) => {
     return state.appReducer.checkUserAuth;
   });
-  // let total = subtotal === 0 ? 0 : 0.05 * subtotal + subtotal + 20;
 
   useEffect(() => {
     try {
@@ -66,9 +60,8 @@ export default function CartPage() {
       calculateCartTotal(res).then(async (response) => {
         setSubtotal(response);
         setItemsHead(res.length + " items");
-        //const t =  subtotal === 0 ? 0 : 0.05 * subtotal + subtotal + 20;
 
-        console.log(response);
+        // console.log(response);
       });
     });
   };

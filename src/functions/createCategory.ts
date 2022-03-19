@@ -12,7 +12,7 @@ import store from "../store";
 
     return await axios.put(process.env.REACT_APP_REPL_HOST+"/api/save-category", ct).then((res) => {
       if (res.status === 200) {
-        console.log(res.data);
+       // console.log(res.data);
          getCategories().then((res) => {
          setCategories(res);
          store.dispatch(changeLoadingState('hidden'));

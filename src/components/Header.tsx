@@ -1,42 +1,32 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import NavbarDesktop from "./Navbar_desktop";
 import { useDispatch, useSelector } from "react-redux";
 import { changeAuthPageState } from "../AppSlice";
 import { RootState } from "../store";
 import { Link } from "react-router-dom";
-import verifyToken from "../functions/verifyToken";
 
 export default function Header() {
-  const [isLoggedIn, setLoggedIn] = useState(false);
-  const [email, setEmail] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const dispatch = useDispatch();
   const authCheck = useSelector((state: RootState) => {
     return state.appReducer.checkUserAuth;
   });
 
   useEffect(() => {
-    mail();
+    checkIfUserLoggedIn();
   }, []);
-  ///STYLES DEPENDING UPON USER IS LOGGED IN OR ISN'T------
-  // const avatarRef:any = useRef();
-  // const signInButtonRef:any= useRef();
 
-  ///////////////
   function slideDownAuthPage() {
     dispatch(changeAuthPageState("animate-slideDown"));
   }
 
-  async function mail() {
-    if (checkIfUserLoggedIn()) {
-      const response = await verifyToken(authCheck);
-      setEmail(response);
-    }
-  }
   function checkIfUserLoggedIn(): boolean {
     if (authCheck === "not logged in") {
+      setIsLoggedIn(false);
       return false;
     } else {
       ///DISPLAY PROFILE AVATAR ----------
+      setIsLoggedIn(true);
       return true;
     }
   }
@@ -57,7 +47,7 @@ export default function Header() {
               src="./assets/carticon.svg"
               alt=""
               className={`w-14 h-12 my-auto cursor-pointer ${
-                checkIfUserLoggedIn() ? "flex" : "hidden"
+                isLoggedIn ? "flex" : "hidden"
               }`}
             />
           </Link>
@@ -67,7 +57,7 @@ export default function Header() {
                 src="./assets/gamer.png"
                 alt=""
                 className={`w-11 h-11 my-auto cursor-pointer ml-5
-                 ${checkIfUserLoggedIn() ? "flex" : "hidden"}`}
+                 ${isLoggedIn ? "flex" : "hidden"}`}
               />
             </div>
           </Link>
@@ -76,7 +66,7 @@ export default function Header() {
               slideDownAuthPage();
             }}
             className={`${
-              checkIfUserLoggedIn() ? "hidden" : "block"
+              isLoggedIn ? "hidden" : "block"
             } text-base font-semibold rounded-2xl px-8 py-0 text-[#ff4a60] border-2 border-[#ff4a60] hover:bg-[#ff4a60] hover:border-0 hover:text-white`}
           >
             Sign in

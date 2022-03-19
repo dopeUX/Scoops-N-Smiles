@@ -10,7 +10,7 @@ import store from "../store";
        productId : productId
     } 
     await axios.post(process.env.REACT_APP_REPL_HOST+'/api/delete-from-cart',body).then(res=>{
-        console.log(res.data)
+       // console.log(res.data)
         window.location.reload();
         store.dispatch(changeIsLoading(false));
         store.dispatch(changeLoadingState('hidden'));

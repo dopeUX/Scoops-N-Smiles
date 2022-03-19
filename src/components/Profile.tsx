@@ -4,7 +4,6 @@ import { useNavigate } from "react-router";
 import { changeUserAuthState } from "../AppSlice";
 import getLoggeInUserDetails from "../functions/getLoggeInUserDetails";
 import updateUserDetails from "../functions/updateUserDetails";
-import verifyToken from "../functions/verifyToken";
 import { RootState } from "../store";
 
 export default function ProfilePage() {
@@ -27,11 +26,6 @@ export default function ProfilePage() {
       if (authCheck !== "not logged in") {
         getLoggeInUserDetails(authCheck).then(async (res: any) => {
           setUser(res);
-          // setEmail(res.email);
-          // setFirstName(res.firstName);
-          // setLastName(res.lastName);
-          // setAddress(res.address);
-          // setPhone(res.phone);
         });
       } else {
         nav("/");
@@ -47,7 +41,7 @@ export default function ProfilePage() {
       setAddress(user.address);
       setPhone(user.phone);
     }
-    console.log(user);
+    // console.log(user);
   }, [user]);
 
   function logOut() {
@@ -93,11 +87,6 @@ export default function ProfilePage() {
               }}
               readOnly={contentEditable === false ? true : false}
             />
-            {/* <img
-              src="/assets/edit.png"
-              alt=""
-              className="w-12 h-12 absolute right-0 top-[-.5em]"
-            /> */}
           </div>
 
           {/* Last Name */}
@@ -112,11 +101,6 @@ export default function ProfilePage() {
               }}
               readOnly={contentEditable === false ? true : false}
             />
-            {/* <img
-              src="/assets/edit.png"
-              alt=""
-              className="w-12 h-12 absolute right-0 top-[-.5em]"
-            /> */}
           </div>
         </div>
 
@@ -132,11 +116,6 @@ export default function ProfilePage() {
             }}
             readOnly={contentEditable === false ? true : false}
           />
-          {/* <img
-            src="/assets/edit.png"
-            alt=""
-            className="w-12 h-12 absolute right-0 top-[-.5em]"
-          /> */}
         </div>
 
         {/* Phone */}

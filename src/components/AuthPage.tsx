@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { changeAuthPageState } from "../AppSlice";
 import { useSelector, useDispatch } from "react-redux";
-import store, { RootState } from "../store";
-import { changeUserAuthState } from "../AppSlice";
-import { changeIsLoading, changeLoadingState } from "../AppSlice";
+import { RootState } from "../store";
 import axios from "axios";
 import { GoogleLogin } from "react-google-login";
-import { useNavigate } from "react-router";
 import loginUser from "../functions/loginUser";
 import registerUser from "../functions/registerUser";
 import TextTransition, { presets } from "react-text-transition";
@@ -15,7 +12,6 @@ export default function AuthPage() {
   const [email, setEmail] = useState("testuser123@gmail.com");
   const [password, setPassword] = useState("secret123");
   const [confirmPass, setConfirmPass] = useState("");
-  const nav = useNavigate();
   const [cp, setcp] = useState("hidden");
   const [authTitle, setAuthTitle] = useState("Login to your account");
   const [submitButton, setSubmitText] = useState("Sign in");
@@ -30,8 +26,7 @@ export default function AuthPage() {
   const dispatch = useDispatch();
   const clientId: string | undefined = process.env.REACT_APP_GOOGLE_CLOUD_API!;
   const secretKey: string | undefined = process.env.REACT_APP_JWT_SECRET_KEY!;
-  // console.log(secretKey+" "+clientId)
-  // console.log(process.env.REACT_APP_SECRET_NAME);
+
   const quotes = [
     "Without ice cream, there would be darkness and chaos.",
     "There were some problems only coffee and ice cream could fix.",
@@ -47,8 +42,8 @@ export default function AuthPage() {
   const [textIndex, setTextIndex] = useState(0)!;
 
   const googleSignInSuccess = async (res: any) => {
-    console.log(res.profileObj.email);
-    console.log(res.profileObj.givenName + " " + res.profileObj.familyName);
+    // console.log(res.profileObj.email);
+    // console.log(res.profileObj.givenName + " " + res.profileObj.familyName);
     // console.log(res.tokenId);
     //calling google login api---------
     await axios
@@ -56,7 +51,7 @@ export default function AuthPage() {
         token: res.tokenId,
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         if (response.data.user) {
           loginUser(res.profileObj.email, secretKey);
         } else {
@@ -67,6 +62,7 @@ export default function AuthPage() {
 
   const googleSignInError = function (res) {
     console.log(res);
+    //alert(res);
   };
 
   function switchAuthStates() {
@@ -86,14 +82,11 @@ export default function AuthPage() {
       setNum(1);
     }
   }
-  //REGISTER METHOD ----------------
-
-  //LOGIN METHOD -----------
 
   useEffect(() => {
     const intervalId = setInterval(
       () => setTextIndex((textIndex) => textIndex + 1),
-      4000, // every 3 seconds
+      4000, // every 4 seconds
     );
     return () => clearTimeout(intervalId);
   });
@@ -110,7 +103,6 @@ export default function AuthPage() {
             <span className="mt-2">Smiles</span>
           </h1>
           <TextTransition
-            //className="text-[#AFAFAF] font-semibold w-44 ml-[-1.4em] mt-10"
             text={quotes[textIndex % quotes.length]}
             springConfig={presets.wobbly}
             style={{
@@ -122,24 +114,16 @@ export default function AuthPage() {
             }}
           />
           <TextTransition
-            // className="text-[#afafaf] font-semibold ml-[-1.4em] mt-5"
             text={" - " + authors[textIndex % authors.length]}
             springConfig={presets.wobbly}
             style={{
               color: "#afafaf",
-              // width: "13rem",
               marginLeft: "auto",
               marginRight: "auto",
               fontWeight: "600",
               marginTop: "1.4rem",
             }}
           />
-          {/* <p className="text-[#AFAFAF] font-semibold w-56 ml-[-1.4em] mt-10">
-            "Without ice cream, there would be darkness and chaos."
-          </p>
-          <p className="text-[#afafaf] font-semibold ml-[-1.4em] mt-5">
-            -Don Cardong
-          </p> */}
         </section>
 
         <div className="w-1 rounded-lg mx-20 bg-[#afafaf] tab:hidden"></div>

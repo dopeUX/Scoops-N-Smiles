@@ -1,8 +1,7 @@
 import Lottie from "react-lottie";
 import animationData from "../lotties/icecream.json";
 import { RootState } from "../store";
-import { changeLoadingState, changeIsLoading } from "../AppSlice";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 export default function LoadingPage() {
   const loadingState = useSelector((state: RootState) => {

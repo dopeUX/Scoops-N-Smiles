@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, To } from "react-router-dom";
 const NavbarItems = [
   {

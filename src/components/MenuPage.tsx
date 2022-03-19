@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import ProductItem from "./ProductItem";
 import { useDispatch, useSelector } from "react-redux";
 import store, { RootState } from "../store";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   changeAuthPageState,
   changeIsLoading,
@@ -21,10 +22,6 @@ export default function MenuPage() {
   const authCheck = useSelector((state: RootState) => {
     return state.appReducer.checkUserAuth;
   });
-  const [category, setCategory] = useState({
-    // cones : 'cones',
-    // cups : 'cups'
-  });
 
   useEffect(() => {
     try {
@@ -36,13 +33,13 @@ export default function MenuPage() {
         setShowLoader(false);
         store.dispatch(changeIsLoading(false));
         store.dispatch(changeLoadingState("hidden"));
-        console.log("state changed");
+        //console.log("state changed");
       });
     } catch (error) {
       setShowLoader(false);
       store.dispatch(changeIsLoading(false));
       store.dispatch(changeLoadingState("hidden"));
-      console.error("unable to get categories", error);
+      // console.error("unable to get categories", error);
     }
   }, []);
 
@@ -56,16 +53,21 @@ export default function MenuPage() {
       store.dispatch(changeIsLoading(false));
       store.dispatch(changeLoadingState("hidden"));
       setShowLoader(false);
-      console.log(error);
+      //  console.log(error);
     }
   }, []);
 
-  function checkIfUserLoggedIn(itemName: string, itemId: string): any {
+  async function checkIfUserLoggedIn(
+    itemName: string,
+    itemId: string,
+  ): Promise<any> {
     if (authCheck === "not logged in") {
       dispatch(changeAuthPageState("animate-slideDown"));
     } else {
-      console.log(itemName + " order placed");
-      jwtVerify(itemId);
+      // console.log(itemName + " order placed");
+      await jwtVerify(itemId);
+      toast(itemName + "added to cart");
+      // alert(itemName + " added to cart");
     }
   }
   const jwtVerify = async (itemId: string) => {
@@ -80,6 +82,7 @@ export default function MenuPage() {
 
   return (
     <div className="mt-3 ml-10 lg:ml-20">
+      <ToastContainer />
       {categories.map((item: any, index: number) => {
         return (
           <section className="w-fit h-fit " key={index}>

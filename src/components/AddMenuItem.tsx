@@ -1,18 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Footer from "./Footer";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
-import { upload } from "@testing-library/user-event/dist/upload";
-import CategoryDropDown from "./CategoryDropDown";
+import { Link } from "react-router-dom";
 import getCategories from "../functions/getCategories";
 import createCategory from "../functions/createCategory";
 import saveIceItem from "../functions/addMenuItem";
 
 export default function AddMenuItem() {
-  // const navigate = useNavigate();
-  // const location = useLocation();
-  // const state = location.state;
-  const nav = useNavigate();
   const [price, setPrice] = useState("5");
   const imageRef: any = useRef();
   const [imageSrc, setImageSrc] = useState("/assets/add-menu-item.png");

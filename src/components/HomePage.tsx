@@ -1,25 +1,20 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import ProductItem from "./ProductItem";
 import { useDispatch, useSelector } from "react-redux";
 import { changeAuthPageState } from "../AppSlice";
-import Footer from "./Footer";
 import { RootState } from "../store";
 import axios from "axios";
 import topPicks from "../functions/getTopPicks";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
 import { useNavigate } from "react-router";
 import verifyToken from "../functions/verifyToken";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function HomePage() {
   const nav = useNavigate();
   const [items, setItems] = useState<any>([]);
-  const password = "secret123";
+
   useEffect(() => {
-    //  axios.get("http://localhost:3000/retrieve-products/").then((res) => {
-    //    setItems(res.data.items);
-    //    console.log(items);
-    //  });
     setItems(topPicks);
   }, []);
   const dispatch = useDispatch();
@@ -46,18 +41,20 @@ export default function HomePage() {
       console.log(itemName + " order placed");
       // const tok = jwt.decode(authCheck)
       // console.log(tok)
-      jwtVerify(itemId);
+      jwtVerify(itemId, itemName);
       // console.log(check)
     }
   }
-  const jwtVerify = async (itemId: string) => {
+  const jwtVerify = async (itemId: string, itemName: string) => {
     const email = await verifyToken(authCheck);
     await saveItemToCart(email, itemId);
+    toast(itemName + " added to cart");
   };
   return (
     /* //TOP PICKS SECTION */
 
     <section className="px-0 py-5 pb-[6rem] w-full h-full md:pb-0 lg:px-20 z-40">
+      <ToastContainer />
       <div className="flex flex-col relative w-full h-fit md:flex-col-reverse z-40">
         <div className="top-picks-section w-full h-fit md:text-center md:mx-auto md:w-fit">
           <div className="relative pl-5 w-fit h-fit md:mx-auto md:mt-20 lg:mt-20">

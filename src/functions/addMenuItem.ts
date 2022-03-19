@@ -16,8 +16,8 @@ const uploadImage = async (image:File,iceName:string, setNav:any) => {
     await axios
       .put(process.env.REACT_APP_REPL_HOST+"/api/upload", data, config)
       .then((res) => {
-        console.log(res.data);
-        console.log(res.status);
+        // console.log(res.data);
+        // console.log(res.status);
         
       });
     console.log("uploaded");
@@ -34,11 +34,7 @@ const uploadImage = async (image:File,iceName:string, setNav:any) => {
       price: price,
       color: color,
     };
-    //  await axios.post('http://localhost:3000/save-item',item).then(res=>{
-    //    if(res.status){
-    //      uploadImage();
-    //    }
-    //  });
+  
     const response = await axios.post(process.env.REACT_APP_REPL_HOST+"/api/save-item", item);
     if (response.status) {
       await uploadImage(image,iceName, setNav);

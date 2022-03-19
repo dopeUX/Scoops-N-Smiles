@@ -1,10 +1,6 @@
-import { useDispatch } from "react-redux";
-import { changeAuthPageState } from "../AppSlice";
-import ReactStarsRating from "react-awesome-stars-rating";
 import { useEffect, useRef } from "react";
 
 export default function ProductItem(props) {
-  const dispatch = useDispatch();
   const url =
     process.env.REACT_APP_REPL_HOST + "/uploads/" + props.iceName + ".jpg";
   const colorRef: any = useRef("#EFD9B2");
@@ -12,9 +8,7 @@ export default function ProductItem(props) {
   useEffect(() => {
     colorRef.current.style.backgroundColor = props.color;
   }, []);
-  //   function slideDownAuthPage() {
-  //     dispatch(changeAuthPageState("animate-slideDown"));
-  //   }
+
   return (
     <div className="mr-7 w-fit mt-14 lg:mr-12  hover:transition-all hover:scale-110 duration-300">
       <div

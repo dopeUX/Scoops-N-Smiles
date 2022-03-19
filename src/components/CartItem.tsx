@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import deleteCartItem from "../functions/deleteCartItem";
 
 export default function CartItem(props) {
   const [iceName, setIceName] = useState("");
-  const [quantity, setQuantity] = useState(1);
   const imageUrl =
     process.env.REACT_APP_REPL_HOST + "/uploads/" + props.item.iceName + ".jpg";
   // let quantity: number = 3;
